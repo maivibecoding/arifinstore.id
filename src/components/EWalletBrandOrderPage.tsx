@@ -22,6 +22,7 @@ import {
   Clock,
   Sparkles,
   ChevronRight,
+  AlertTriangle,
 } from "lucide-react";
 
 interface EWalletBrandOrderPageProps {
@@ -37,6 +38,8 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
   const [selectedNominal, setSelectedNominal] = useState<NominalItem | null>(null);
   const [accountName, setAccountName] = useState<string | null>(null);
   const [isValidating, setIsValidating] = useState(false);
+  const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "UNCONFIGURED">("IDLE");
+  const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
   // Modals
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
@@ -59,20 +62,52 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
     }
   }, []);
 
-  // Account validation inquiry simulation
+  // Real Account validation inquiry
   useEffect(() => {
     const cleanNumber = phoneNumber.replace(/[^0-9]/g, "");
     if (cleanNumber.length >= 10) {
       setIsValidating(true);
-      const timer = setTimeout(() => {
-        setAccountName("MOKHAMMAD ARIFIN ILHAM");
-        setIsValidating(false);
-      }, 400);
+      setAccountName(null);
+      setValidationMessage(null);
+      setValidationStatus("IDLE");
+
+      const timer = setTimeout(async () => {
+        try {
+          const res = await fetch("/api/validate-account", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              brandId: brand.id,
+              phoneNumber: cleanNumber,
+            }),
+          });
+          const data = await res.json();
+          if (data.success && data.accountName) {
+            setAccountName(data.accountName);
+            setValidationStatus("SUCCESS");
+          } else if (data.error === "ACCOUNT_NOT_FOUND") {
+            setValidationStatus("NOT_FOUND");
+            setValidationMessage(data.message || `Nomor ini tidak terdaftar di ${brand.name}.`);
+          } else {
+            setValidationStatus("UNCONFIGURED");
+            setValidationMessage(null);
+          }
+        } catch (err) {
+          console.error("Account validation error:", err);
+          setValidationStatus("UNCONFIGURED");
+        } finally {
+          setIsValidating(false);
+        }
+      }, 500);
+
       return () => clearTimeout(timer);
     } else {
       setAccountName(null);
+      setValidationMessage(null);
+      setValidationStatus("IDLE");
+      setIsValidating(false);
     }
-  }, [phoneNumber, brand]);
+  }, [phoneNumber, brand.id]);
 
   const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault();
@@ -204,16 +239,34 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
             {/* Account Validation Status Indicator */}
             {isValidating && (
               <div className="flex items-center gap-2 text-xs text-[#0066cc] animate-pulse pt-1">
-                <span className="w-2 h-2 rounded-full bg-[#0066cc] animate-ping" />
-                <span>Memeriksa nama pemilik akun {brand.name}...</span>
+                <span className="w-3.5 h-3.5 border-2 border-[#0066cc] border-t-transparent rounded-full animate-spin shrink-0" />
+                <span>Memverifikasi akun {brand.name}...</span>
               </div>
             )}
 
-            {accountName && !isValidating && (
+            {!isValidating && validationStatus === "SUCCESS" && accountName && (
               <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2 text-xs text-emerald-800 font-medium">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>
-                  Pemilik Akun Terdaftar: <strong>{accountName}</strong> (Nama sudah sesuai)
+                  Pemilik Akun Terdaftar: <strong>{accountName}</strong> (Terverifikasi)
+                </span>
+              </div>
+            )}
+
+            {!isValidating && validationStatus === "NOT_FOUND" && (
+              <div className="p-3 rounded-xl bg-rose-50 border border-rose-200 flex items-center gap-2 text-xs text-rose-700 font-medium">
+                <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                <span>
+                  {validationMessage || `Nomor ini tidak terdaftar di ${brand.name}. Periksa kembali nomor akun Anda.`}
+                </span>
+              </div>
+            )}
+
+            {!isValidating && validationStatus === "UNCONFIGURED" && phoneNumber.replace(/[^0-9]/g, "").length >= 10 && (
+              <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200 flex items-center gap-2 text-xs text-slate-700 font-medium">
+                <CheckCircle2 className="w-4 h-4 text-[#0066cc] shrink-0" />
+                <span>
+                  Nomor Tujuan: <strong className="font-mono text-slate-900">{phoneNumber}</strong>. Pastikan nomor handphone aktif dan sesuai akun {brand.name}.
                 </span>
               </div>
             )}
