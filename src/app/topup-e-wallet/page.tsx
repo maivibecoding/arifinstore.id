@@ -103,10 +103,9 @@ export default function TopupEWalletPage() {
             <table className="w-full text-left text-xs">
               <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
                 <tr>
-                  <th className="p-3">Nominal Masuk</th>
-                  <th className="p-3">Harga Arifin Store</th>
-                  <th className="p-3">Harga Normal Pasar</th>
-                  <th className="p-3">Hemat</th>
+                  <th className="p-3">Nominal Saldo</th>
+                  <th className="p-3">Harga Bayar</th>
+                  <th className="p-3">Biaya Admin</th>
                   <th className="p-3">Kecepatan</th>
                 </tr>
               </thead>
@@ -114,10 +113,9 @@ export default function TopupEWalletPage() {
                 {FIXED_NOMINALS.slice(0, 8).map((nom) => (
                   <tr key={nom.amount} className="hover:bg-slate-50/80">
                     <td className="p-3 font-bold text-slate-800">Rp {nom.label}</td>
-                    <td className="p-3 font-mono font-bold text-emerald-600">{formatRupiah(nom.price)}</td>
-                    <td className="p-3 font-mono text-slate-400 line-through">{formatRupiah(nom.originalPrice)}</td>
-                    <td className="p-3 text-[#0066cc] font-semibold">{formatRupiah(nom.originalPrice - nom.price)}</td>
-                    <td className="p-3 text-slate-600">Instan (5 Detik)</td>
+                    <td className="p-3 font-mono font-bold text-[#0066cc]">{formatRupiah(nom.price)}</td>
+                    <td className="p-3 text-slate-600 font-semibold">{formatRupiah(nom.price - nom.amount)}</td>
+                    <td className="p-3 text-emerald-600 font-medium">Instan (5 Detik)</td>
                   </tr>
                 ))}
               </tbody>

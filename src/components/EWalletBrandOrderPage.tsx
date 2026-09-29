@@ -215,14 +215,9 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
 
           {/* Step 2: Pilih Nominal Saldo (19 Fixed Nominals) */}
           <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-              <h2 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
-                Pilih Nominal Saldo {brand.name}
-              </h2>
-              <span className="text-xs text-slate-500">
-                Tersedia 19 pilihan nominal hemat
-              </span>
-            </div>
+            <h2 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
+              Pilih Nominal
+            </h2>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
               {FIXED_NOMINALS.map((nom) => {
@@ -249,9 +244,6 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
                     <div className="mt-1.5 flex items-baseline justify-between w-full">
                       <span className="text-xs font-bold text-[#0066cc]">
                         {formatRupiah(nom.price)}
-                      </span>
-                      <span className="text-[10px] text-slate-400 line-through">
-                        {formatRupiah(nom.originalPrice)}
                       </span>
                     </div>
                   </button>

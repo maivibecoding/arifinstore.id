@@ -195,14 +195,9 @@ export default function EMoneyTopupSection({
 
         {/* Step 3: Pilih 19 Nominal Tetap */}
         <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-            <h3 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
-              Pilih Nominal Top-Up (19 Pilihan Tetap)
-            </h3>
-            <p className="text-xs text-slate-500">
-              *Tarif hemat diambil dari produk Sekalipay Bebas Nominal
-            </p>
-          </div>
+          <h3 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
+            Pilih Nominal
+          </h3>
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
             {FIXED_NOMINALS.map((nominal) => {
@@ -229,9 +224,6 @@ export default function EMoneyTopupSection({
                   <div className="mt-1.5 flex items-baseline justify-between w-full">
                     <span className="text-xs font-bold text-[#0066cc]">
                       {formatRupiah(nominal.price)}
-                    </span>
-                    <span className="text-[10px] text-slate-400 line-through">
-                      {formatRupiah(nominal.originalPrice)}
                     </span>
                   </div>
                 </button>
