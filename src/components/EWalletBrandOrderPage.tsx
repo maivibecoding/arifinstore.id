@@ -246,7 +246,7 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
                       </span>
                     )}
                     <span className="text-xs sm:text-sm font-black text-slate-900">
-                      Rp {nom.label}
+                      {brand.name.toUpperCase()} {nom.label}
                     </span>
                     <div className="mt-1.5 flex items-baseline justify-between w-full">
                       <span className="text-xs font-bold text-[#0066cc]">

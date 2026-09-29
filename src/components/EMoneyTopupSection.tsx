@@ -227,7 +227,7 @@ export default function EMoneyTopupSection({
                     </span>
                   )}
                   <span className="text-xs sm:text-sm font-extrabold text-slate-900">
-                    Rp {nominal.label}
+                    {selectedBrand.name.toUpperCase()} {nominal.label}
                   </span>
                   <div className="mt-1.5 flex items-baseline justify-between w-full">
                     <span className="text-xs font-bold text-[#0066cc]">
