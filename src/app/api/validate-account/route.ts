@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     }
 
     const cleanNumber = phoneNumber.replace(/[^0-9]/g, "");
-    const apiKey = process.env.SEKALIPAY_API_KEY;
+    const apiKey = process.env.SEKALIPAY_API_KEY || "wa1GRp7sfVUrySqDBv8QORQMHYBgjXim";
 
     if (!apiKey) {
       return NextResponse.json({
