@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi REST API - IndoApi - IndoApi</title>
+    <meta name="base-url" content="">
+    <meta name="csrf-token" content="25e68bded37eb21c99df9f8df92ad5097960835109f5ca1311e53785daa06137">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#0b0f19'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="/public/css/app.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col justify-between">
+    <!-- Navbar -->
+    <nav class="bg-white/80 backdrop-blur-md border-b border-slate-100 text-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="flex items-center space-x-2 transition-transform hover:scale-[1.02] duration-200">
+                                                    <img class="h-8 w-8 rounded-full object-cover" src="/public/uploads/logo/logo_1782129581.svg" alt="IndoApi">
+                                                <span class="font-extrabold text-lg tracking-tight text-slate-900">IndoApi</span>
+                    </a>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="/documentation" class="text-slate-600 hover:bg-slate-50 hover:text-slate-900 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200">Dokumentasi API</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                                            <a href="/login" class="text-slate-600 hover:text-slate-900 px-3 py-2 text-xs font-semibold transition-colors duration-200">Masuk</a>
+                        <a href="/register" class="bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 shadow-sm shadow-sky-500/10 hover:shadow-md hover:scale-[1.02]">Daftar</a>
+                                    </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 py-8 px-4">
+    <!-- Sidebar Navigation -->
+    <aside class="flex flex-row overflow-x-auto gap-2 pb-3 mb-6 w-full border-b border-slate-200 md:flex-col md:w-64 md:shrink-0 md:gap-1 md:sticky md:top-24 md:h-fit md:border-b-0 md:pb-0 md:mb-0 text-xs [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <h3 class="hidden md:block font-bold text-slate-900 uppercase tracking-wider text-[10px] px-3 mb-3">Dokumentasi API</h3>
+        <a href="#getting-started" class="block shrink-0 whitespace-nowrap px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Memulai</a>
+        <a href="#authentication" class="block shrink-0 whitespace-nowrap px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Autentikasi</a>
+        <a href="#create-payment" class="block shrink-0 whitespace-nowrap px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Buat Pembayaran</a>
+        <a href="#payment-status" class="block shrink-0 whitespace-nowrap px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Cek Status Pembayaran</a>
+        <a href="#cancel-payment" class="block shrink-0 whitespace-nowrap px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Batal Transaksi</a>
+        <a href="#webhooks" class="block shrink-0 whitespace-nowrap px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Integrasi Webhook</a>
+        <a href="#signature-verification" class="block shrink-0 whitespace-nowrap px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Verifikasi Signature</a>
+        <a href="#error-codes" class="block shrink-0 whitespace-nowrap px-3 py-2 rounded-md font-semibold text-slate-700 hover:bg-slate-100 transition-colors">Kode Error</a>
+    </aside>
+
+
+    <!-- Main Content -->
+    <div class="flex-grow space-y-12 max-w-4xl text-slate-700 text-xs leading-relaxed">
+        
+        <!-- Getting Started -->
+        <section id="getting-started" class="space-y-3 scroll-mt-24">
+            <h2 class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">Memulai</h2>
+            <p>Indoapi adalah Payment API Gateway mandiri yang menghubungkan aplikasi Anda langsung ke akun GoPay Merchant pribadi Anda. Semua transaksi diproses secara real-time dan langsung masuk ke saldo akun Anda tanpa perantara.</p>
+            <div class="bg-slate-50 p-4 border border-slate-200 rounded-lg space-y-2">
+                <span class="block font-bold text-slate-800 uppercase tracking-wider text-[10px]">Base URL</span>
+                <code class="bg-white border border-slate-200 px-2 py-1 rounded font-mono text-[11px] block break-all">https://indoapi.biz</code>
+            </div>
+        </section>
+
+        <!-- Authentication -->
+        <section id="authentication" class="space-y-3 scroll-mt-24">
+            <h2 class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">Autentikasi</h2>
+            <p>Seluruh pemanggilan REST API wajib menyertakan autentikasi menggunakan API Key. Anda dapat meletakkan API Key pada header HTTP request dengan format berikut:</p>
+            <div class="bg-slate-900 text-slate-350 p-4 rounded-lg font-mono text-[11px] overflow-x-auto">
+                <span class="text-sky-400">X-API-Key</span>: iak_xxxxxx<br>
+                <span class="text-slate-500">atau</span><br>
+                <span class="text-sky-400">Authorization</span>: Bearer iak_xxxxxx
+            </div>
+        </section>
+
+        <!-- Create Payment -->
+        <section id="create-payment" class="space-y-4 scroll-mt-24">
+            <h2 class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">Buat Pembayaran</h2>
+            <p>Meminta pembuatan invoice pembayaran baru. Server akan mengembalikan parameter string QRIS dinamis yang siap dipindai oleh pelanggan Anda.</p>
+            <div class="flex items-center space-x-2">
+                <span class="bg-emerald-600 text-white font-bold px-2 py-0.5 rounded text-[10px]">POST</span>
+                <code class="font-mono text-slate-800 text-[11px]">https://indoapi.biz/api/v1/payment/create</code>
+            </div>
+
+            <h4 class="font-bold text-slate-800">Body Parameters (JSON)</h4>
+            <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 font-bold text-[10px] tracking-wider text-slate-500">
+                            <th class="px-4 py-2">Parameter</th>
+                            <th class="px-4 py-2">Tipe</th>
+                            <th class="px-4 py-2">Wajib</th>
+                            <th class="px-4 py-2">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">amount</td>
+                            <td class="px-4 py-2">Number</td>
+                            <td class="px-4 py-2 text-rose-500 font-semibold">Ya</td>
+                            <td class="px-4 py-2">Jumlah nominal pembayaran dalam Rupiah (min. 1000).</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">reference</td>
+                            <td class="px-4 py-2">String</td>
+                            <td class="px-4 py-2 text-slate-500">Tidak</td>
+                            <td class="px-4 py-2">ID unik transaksi dari sistem Anda. Jika kosong, invoice ID generator default akan digunakan.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">description</td>
+                            <td class="px-4 py-2">String</td>
+                            <td class="px-4 py-2 text-slate-500">Tidak</td>
+                            <td class="px-4 py-2">Keterangan/catatan pembayaran.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">customer_name</td>
+                            <td class="px-4 py-2">String</td>
+                            <td class="px-4 py-2 text-slate-500">Tidak</td>
+                            <td class="px-4 py-2">Nama pelanggan Anda.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">callback_url</td>
+                            <td class="px-4 py-2">String (URL)</td>
+                            <td class="px-4 py-2 text-slate-500">Tidak</td>
+                            <td class="px-4 py-2">URL webhook tujuan khusus untuk transaksi ini.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <span class="block font-bold text-slate-800 uppercase tracking-wider text-[10px] mb-2">Contoh Request</span>
+                    <pre class="bg-slate-900 text-slate-300 p-4 rounded-lg font-mono text-[11px] overflow-x-auto">{
+  "amount": 50000,
+  "reference": "INV-10291",
+  "description": "Beli Kaos Distro",
+  "customer_name": "Anto"
+}</pre>
+                </div>
+                <div>
+                    <span class="block font-bold text-slate-800 uppercase tracking-wider text-[10px] mb-2">Contoh Response (201 Created)</span>
+                    <pre class="bg-slate-900 text-slate-300 p-4 rounded-lg font-mono text-[11px] overflow-x-auto">{
+  "success": true,
+  "data": {
+    "invoice": "INV-20260620-80E2",
+    "reference": "INV-10291",
+    "amount": 50000,
+    "qris_string": "0002010102122657...",
+    "qr_image": "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=000201...",
+    "payment_url": "https://indoapi.biz/payment/status/INV-20260620-80E2",
+    "status": "pending",
+    "expired_at": "2026-06-21T15:00:00+07:00"
+  }
+}</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Payment Status -->
+        <section id="payment-status" class="space-y-4 scroll-mt-24">
+            <h2 class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">Cek Status Pembayaran</h2>
+            <p>Mendapatkan informasi detail dan status terbaru dari transaksi pembayaran tertentu.</p>
+            <div class="flex items-center space-x-2">
+                <span class="bg-sky-600 text-white font-bold px-2 py-0.5 rounded text-[10px]">GET</span>
+                <code class="font-mono text-slate-800 text-[11px]">https://indoapi.biz/api/v1/payment/status/{reference}</code>
+            </div>
+
+            <div>
+                <span class="block font-bold text-slate-800 uppercase tracking-wider text-[10px] mb-2">Contoh Response (200 OK)</span>
+                <pre class="bg-slate-900 text-slate-300 p-4 rounded-lg font-mono text-[11px] overflow-x-auto">{
+  "success": true,
+  "data": {
+    "invoice": "INV-20260620-80E2",
+    "reference": "INV-10291",
+    "amount": 50000,
+    "status": "success",
+    "payment_method": "qris",
+    "qris_string": "0002010102122657...",
+    "qr_image": "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=000201...",
+    "payment_url": "https://indoapi.biz/payment/status/INV-20260620-80E2",
+    "description": "Beli Kaos Distro",
+    "paid_at": "2026-06-20 15:32:01",
+    "expired_at": "2026-06-21 15:00:00",
+    "created_at": "2026-06-20 15:00:00"
+  }
+}</pre>
+            </div>
+        </section>
+ 
+        <!-- Cancel Payment -->
+        <section id="cancel-payment" class="space-y-4 scroll-mt-24">
+            <h2 class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">Batal Transaksi</h2>
+            <p>Membatalkan transaksi pembayaran pending. Status transaksi akan diubah menjadi <code>failed</code>.</p>
+            <div class="flex items-center space-x-2">
+                <span class="bg-rose-600 text-white font-bold px-2 py-0.5 rounded text-[10px]">POST</span>
+                <code class="font-mono text-slate-800 text-[11px]">https://indoapi.biz/api/v1/payment/cancel</code>
+            </div>
+
+            <h4 class="font-bold text-slate-800">Body Parameters (JSON)</h4>
+            <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 font-bold text-[10px] tracking-wider text-slate-500">
+                            <th class="px-4 py-2">Parameter</th>
+                            <th class="px-4 py-2">Tipe</th>
+                            <th class="px-4 py-2">Wajib</th>
+                            <th class="px-4 py-2">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">reference</td>
+                            <td class="px-4 py-2">String</td>
+                            <td class="px-4 py-2 text-rose-500 font-semibold">Ya*</td>
+                            <td class="px-4 py-2">ID unik transaksi dari sistem Anda atau ID Invoice (misal: <code>INV-xxxx</code>). *Wajib mengisi salah satu dari <code>reference</code> atau <code>invoice</code>.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">invoice</td>
+                            <td class="px-4 py-2">String</td>
+                            <td class="px-4 py-2 text-rose-500 font-semibold">Ya*</td>
+                            <td class="px-4 py-2">ID Invoice Indoapi (misal: <code>INV-xxxx</code>). *Wajib mengisi salah satu dari <code>reference</code> atau <code>invoice</code>.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <span class="block font-bold text-slate-800 uppercase tracking-wider text-[10px] mb-2">Contoh Request</span>
+                    <pre class="bg-slate-900 text-slate-350 p-4 rounded-lg font-mono text-[11px] overflow-x-auto">{
+  "reference": "INV-10291"
+}</pre>
+                </div>
+                <div>
+                    <span class="block font-bold text-slate-800 uppercase tracking-wider text-[10px] mb-2">Contoh Response (200 OK)</span>
+                    <pre class="bg-slate-900 text-slate-350 p-4 rounded-lg font-mono text-[11px] overflow-x-auto">{
+  "success": true,
+  "message": "Transaksi berhasil dibatalkan",
+  "data": {
+    "invoice": "INV-20260620-80E2",
+    "reference": "INV-10291",
+    "status": "failed"
+  }
+}</pre>
+                </div>
+            </div>
+        </section>
+
+        <!-- Webhooks -->
+        <section id="webhooks" class="space-y-4 scroll-mt-24">
+            <h2 class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">Integrasi Webhook</h2>
+            <p>Bila diaktifkan, server kami akan mengirimkan HTTP POST callback secara asinkron saat status pembayaran berubah menjadi <code>success</code>, <code>failed</code>, atau <code>expired</code>.</p>
+            
+            <div>
+                <span class="block font-bold text-slate-800 uppercase tracking-wider text-[10px] mb-2">Payload Webhook</span>
+                <pre class="bg-slate-900 text-slate-300 p-4 rounded-lg font-mono text-[11px] overflow-x-auto">{
+  "event": "payment.updated",
+  "invoice": "INV-20260620-80E2",
+  "reference": "INV-10291",
+  "amount": 50000,
+  "status": "success",
+  "payment_method": "qris",
+  "paid_at": "2026-06-20 15:32:01",
+  "timestamp": "2026-06-20T15:32:01+07:00",
+  "signature": "c8e2fb8a9d012e..."
+}</pre>
+            </div>
+        </section>
+
+        <!-- Signature Verification -->
+        <section id="signature-verification" class="space-y-3 scroll-mt-24">
+            <h2 class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">Verifikasi Signature</h2>
+            <p>Untuk memastikan data webhook dikirim oleh Indoapi dan tidak dimodifikasi di tengah jalan, Anda wajib melakukan verifikasi signature. Signature dikirimkan di dalam JSON payload dengan parameter <code>signature</code>.</p>
+            <p>Signature dibuat dengan algoritma <code>HMAC-SHA256</code> menggunakan Webhook Secret Key Anda sebagai kunci hashing, dari isi JSON payload (tanpa menyertakan parameter `signature` itu sendiri).</p>
+            <div class="bg-slate-50 p-4 border border-slate-200 rounded-lg space-y-2">
+                <span class="block font-bold text-slate-800 uppercase tracking-wider text-[10px] mb-1">Contoh Verifikasi PHP</span>
+                <pre class="bg-slate-900 text-slate-300 p-3 rounded font-mono text-[11px] overflow-x-auto">
+$data = json_decode(file_get_contents('php://input'), true);
+$signature = $data['signature'] ?? '';
+unset($data['signature']);
+
+$expectedSignature = hash_hmac('sha256', json_encode($data), $webhookSecret);
+
+if (hash_equals($expectedSignature, $signature)) {
+    // Valid request
+}</pre>
+            </div>
+        </section>
+
+        <!-- Error Codes -->
+        <section id="error-codes" class="space-y-3 scroll-mt-24">
+            <h2 class="text-lg font-bold text-slate-900 border-b border-slate-200 pb-2">Kode Error</h2>
+            <p>Format response JSON standard untuk error adalah:</p>
+            <pre class="bg-slate-900 text-slate-300 p-4 rounded-lg font-mono text-[11px]">{
+  "success": false,
+  "message": "Pesan deskripsi kesalahan"
+}</pre>
+            <div class="overflow-x-auto border border-slate-200 rounded-lg">
+                <table class="w-full text-left text-xs border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 font-bold text-[10px] tracking-wider text-slate-500">
+                            <th class="px-4 py-2">HTTP Code</th>
+                            <th class="px-4 py-2">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">400 Bad Request</td>
+                            <td class="px-4 py-2">Validasi input bermasalah (contoh: nominal tidak valid).</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">401 Unauthorized</td>
+                            <td class="px-4 py-2">API Key tidak valid, dinonaktifkan, atau tidak disertakan.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">403 Forbidden</td>
+                            <td class="px-4 py-2">Akun belum berlangganan atau tidak memiliki wewenang akses.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 font-mono text-slate-800">404 Not Found</td>
+                            <td class="px-4 py-2">Pembayaran tidak ditemukan.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+</div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 text-slate-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 text-white">
+                                                    <img class="h-8 w-8 rounded-full object-cover" src="/public/uploads/logo/logo_1782129581.svg" alt="IndoApi">
+                                                <span class="font-bold text-lg tracking-tight">IndoApi</span>
+                    </div>
+                    <p class="mt-2 text-xs text-slate-500">Gomer Rest Api</p>
+                </div>
+                <div>
+                    <h3 class="text-white text-xs font-semibold tracking-wider uppercase">Tautan</h3>
+                    <ul class="mt-4 space-y-2 text-xs">
+                        <li><a href="/" class="hover:text-white">Beranda</a></li>
+                        <li><a href="/documentation" class="hover:text-white">Dokumentasi</a></li>
+                        <li><a href="/terms" class="hover:text-white">Syarat & Ketentuan</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-white text-xs font-semibold tracking-wider uppercase">Kontak & Bantuan</h3>
+                    <p class="mt-4 text-xs text-slate-500">Hubungi tim pengembang jika Anda memiliki pertanyaan atau kendala integrasi.</p>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-500">
+                <p>&copy; 2026 IndoApi. Hak Cipta Dilindungi.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <span>Clean & Secure API Gateway</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/public/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Render flash toasts if any
+                    });
+    </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"d1b6b048fcba4b9d99ac8c246ba3681d","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

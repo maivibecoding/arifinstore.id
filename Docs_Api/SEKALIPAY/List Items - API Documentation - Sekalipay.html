@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="id"
+    x-data="{ darkMode: localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches) }"
+    x-init="$watch('darkMode', val => localStorage.setItem('theme', val ? 'dark' : 'light'))"
+    :class="{ 'dark': darkMode }">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta name="csrf-token" content="iZZ13PEneKBowoh6CXDBOR50Oo4JT0HmOK1Fq883" />
+
+    <link rel="icon" href="https://sekalipay.com/favicon.png" type="image/x-icon" />
+    <title>List Items - API Documentation - Sekalipay</title>
+    <meta name="description" content="Endpoint untuk mendapatkan daftar semua item yang tersedia.">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="author" content="Sekalipay">
+
+    
+    <link rel="canonical" href="https://sekalipay.com/api-docs/items">
+
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://sekalipay.com/api-docs/items">
+    <meta property="og:title"
+        content="List Items - API Documentation - Sekalipay">
+    <meta property="og:description" content="Endpoint untuk mendapatkan daftar semua item yang tersedia.">
+    <meta property="og:image" content="https://sekalipay.com/images/logo-1786444255.png">
+    <meta property="og:site_name" content="SekaliPay">
+    <meta property="og:locale" content="id_ID">
+
+    
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title"
+        content="List Items - API Documentation - Sekalipay">
+    <meta name="twitter:description" content="Endpoint untuk mendapatkan daftar semua item yang tersedia.">
+
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    
+    <link rel="preload" as="style" href="https://sekalipay.com/build/assets/app-e655330b.css" /><link rel="preload" as="style" href="https://sekalipay.com/build/assets/app-59b7e6ed.css" /><link rel="modulepreload" href="https://sekalipay.com/build/assets/app-6f84a1e0.js" /><link rel="stylesheet" href="https://sekalipay.com/build/assets/app-e655330b.css" data-navigate-track="reload" /><link rel="stylesheet" href="https://sekalipay.com/build/assets/app-59b7e6ed.css" data-navigate-track="reload" /><script type="module" src="https://sekalipay.com/build/assets/app-6f84a1e0.js" data-navigate-track="reload"></script>    <!-- Livewire Styles --><style >[wire\:loading][wire\:loading], [wire\:loading\.delay][wire\:loading\.delay], [wire\:loading\.inline-block][wire\:loading\.inline-block], [wire\:loading\.inline][wire\:loading\.inline], [wire\:loading\.block][wire\:loading\.block], [wire\:loading\.flex][wire\:loading\.flex], [wire\:loading\.table][wire\:loading\.table], [wire\:loading\.grid][wire\:loading\.grid], [wire\:loading\.inline-flex][wire\:loading\.inline-flex] {display: none;}[wire\:loading\.delay\.none][wire\:loading\.delay\.none], [wire\:loading\.delay\.shortest][wire\:loading\.delay\.shortest], [wire\:loading\.delay\.shorter][wire\:loading\.delay\.shorter], [wire\:loading\.delay\.short][wire\:loading\.delay\.short], [wire\:loading\.delay\.default][wire\:loading\.delay\.default], [wire\:loading\.delay\.long][wire\:loading\.delay\.long], [wire\:loading\.delay\.longer][wire\:loading\.delay\.longer], [wire\:loading\.delay\.longest][wire\:loading\.delay\.longest] {display: none;}[wire\:offline][wire\:offline] {display: none;}[wire\:dirty]:not(textarea):not(input):not(select) {display: none;}:root {--livewire-progress-bar-color: #2299dd;}[x-cloak] {display: none !important;}[wire\:cloak] {display: none !important;}dialog#livewire-error::backdrop {background-color: rgba(0, 0, 0, .6);}</style>
+
+    
+    <style>
+        .code-block {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #232f48;
+            border-radius: 10px;
+        }
+
+        .glass-panel {
+            background: rgba(19, 91, 236, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .mesh-gradient {
+            background-color: #0a0c10;
+            background-image:
+                radial-gradient(at 0% 0%, hsla(223, 85%, 50%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(230, 80%, 40%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(220, 90%, 30%, 0.05) 0px, transparent 50%);
+        }
+
+        .code-glow {
+            box-shadow: 0 0 20px rgba(19, 91, 236, 0.15);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
+        /* Responsive tables and code blocks for mobile */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-responsive table {
+            min-width: 500px;
+        }
+
+        .code-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        @media (max-width: 768px) {
+
+            .api-content pre,
+            .api-content .code-block {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        .api-content {
+            align-items: stretch;
+            background: #ffffff;
+        }
+
+        .dark .api-content {
+            background: #0a0c10;
+        }
+
+        @media (min-width: 1024px) {
+            .api-content > * {
+                min-height: 100%;
+            }
+        }
+    </style>
+
+    
+    
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+
+<body
+    class="bg-[#f6f6f8] dark:bg-[#0a0c10] text-slate-900 dark:text-slate-100 h-screen flex flex-col mesh-gradient overflow-hidden">
+
+    
+    <header
+    class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-[#232f48] bg-[#f6f6f8]/80 dark:bg-[#0a0c10]/80 backdrop-blur-md">
+    <div class="flex h-16 items-center justify-between px-4 lg:px-10 gap-4">
+        
+        <div class="flex items-center gap-4">
+            
+            <button @click="$dispatch('toggle-sidebar')"
+                class="lg:hidden size-10 rounded-xl bg-slate-100 dark:bg-[#1a212e] hover:bg-slate-200 dark:hover:bg-white/10 flex items-center justify-center transition-colors">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+
+            <a href="https://sekalipay.com/api-docs" class="flex items-center gap-2" wire:navigate.hover>
+                <img src="/images/logo.png" alt="Logo" class="h-8 w-auto" />
+            </a>
+
+            <nav class="hidden md:flex items-center gap-6 ml-4">
+                <a class="text-sm font-medium hover:text-blue-600 transition-colors "
+                    href="https://sekalipay.com/api-docs" wire:navigate.hover>Overview</a>
+                <a class="text-sm font-bold text-blue-600 border-b-2 border-blue-600 py-5"
+                    href="https://sekalipay.com/api-docs" wire:navigate.hover>API Reference</a>
+                <a class="text-sm font-medium hover:text-blue-600 transition-colors"
+                    href="https://sekalipay.com/reseller">Reseller Program</a>
+            </nav>
+        </div>
+
+        
+        <div class="flex items-center gap-2 md:gap-4 flex-1 justify-end">
+            
+            <div x-data="apiDocsSearch()" class="relative flex-1 max-w-xs">
+                <span
+                    class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl z-10">search</span>
+                <input x-model="query" @input.debounce.300ms="search()" @focus="showResults = query.length > 0"
+                    @click.outside="showResults = false" @keydown.escape="showResults = false"
+                    class="w-full h-10 pl-10 pr-4 rounded-xl border-none bg-slate-100 dark:bg-[#1a212e] focus:ring-2 focus:ring-blue-600 text-sm placeholder:text-slate-500"
+                    placeholder="Search..." type="text" />
+
+                
+                <div x-show="showResults && results.length > 0" x-transition
+                    class="absolute top-full right-0 mt-2 min-w-[280px] w-max max-w-[90vw] bg-white dark:bg-[#1a212e] rounded-xl shadow-2xl overflow-hidden z-[90] max-h-80 overflow-y-auto border border-slate-200 dark:border-white/10">
+                    <template x-for="result in results" :key="result.url">
+                        <a :href="result.url"
+                            class="flex items-center gap-3 px-4 py-3 hover:bg-slate-100 dark:hover:bg-gray-800 transition-colors">
+                            <span class="material-symbols-outlined text-blue-600 text-lg shrink-0"
+                                x-text="result.icon"></span>
+                            <div class="min-w-0">
+                                <div class="text-sm font-medium truncate" x-text="result.title"></div>
+                                <div class="text-xs text-slate-500 truncate" x-text="result.description"></div>
+                            </div>
+                        </a>
+                    </template>
+                </div>
+
+                
+                <div x-show="showResults && query.length > 0 && results.length === 0" x-transition
+                    class="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#1a212e] rounded-xl shadow-2xl border border-slate-200 dark:border-white/10 p-4 z-50">
+                    <p class="text-sm text-slate-500 text-center">No results found</p>
+                </div>
+            </div>
+
+            
+            <button
+                x-data="{ dark: localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches) }"
+                x-init="$watch('dark', val => { localStorage.setItem('theme', val ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', val) })"
+                @click="dark = !dark"
+                class="size-10 rounded-xl bg-slate-100 dark:bg-[#1a212e] hover:bg-slate-200 dark:hover:bg-white/10 flex items-center justify-center transition-colors shrink-0">
+                <span x-show="!dark" class="material-symbols-outlined text-amber-500">light_mode</span>
+                <span x-show="dark" class="material-symbols-outlined text-blue-400">dark_mode</span>
+            </button>
+
+            
+                            <a href="https://sekalipay.com/join-reseller"
+                    class="hidden sm:flex bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-bold transition-all">
+                    Dashboard
+                </a>
+                    </div>
+    </div>
+</header>
+
+
+<script>
+    function apiDocsSearch() {
+        return {
+            query: '',
+            results: [],
+            showResults: false,
+            endpoints: [
+                { title: 'Overview', description: 'API documentation overview', url: 'https://sekalipay.com/api-docs', icon: 'home', keywords: ['overview', 'home', 'start', 'intro'] },
+                { title: 'Authentication', description: 'API key and IP whitelist', url: 'https://sekalipay.com/api-docs/auth', icon: 'vpn_key', keywords: ['auth', 'api key', 'login', 'apikey', 'x-apikey', 'whitelist', 'ip'] },
+                { title: 'Get Balance', description: 'GET /v1/balance', url: 'https://sekalipay.com/api-docs/balance', icon: 'account_balance_wallet', keywords: ['balance', 'saldo', 'get balance'] },
+                { title: 'Top Up Balance', description: 'POST /v1/balance', url: 'https://sekalipay.com/api-docs/balance/topup', icon: 'add_card', keywords: ['topup', 'top up', 'deposit', 'isi saldo'] },
+                { title: 'Payment Channels', description: 'GET /v1/balance/channels', url: 'https://sekalipay.com/api-docs/balance/channels', icon: 'payments', keywords: ['channel', 'payment', 'qris', 'va', 'bank'] },
+                { title: 'List Items', description: 'GET /v1/item', url: 'https://sekalipay.com/api-docs/items', icon: 'inventory_2', keywords: ['item', 'product', 'produk', 'list'] },
+                { title: 'Item Detail', description: 'GET /v1/item/{id}', url: 'https://sekalipay.com/api-docs/items/detail', icon: 'info', keywords: ['item detail', 'product detail'] },
+                { title: 'List Transactions', description: 'GET /v1/trx', url: 'https://sekalipay.com/api-docs/transactions', icon: 'list_alt', keywords: ['transaction', 'transaksi', 'list', 'history'] },
+                { title: 'Create Transaction', description: 'POST /v1/trx', url: 'https://sekalipay.com/api-docs/transactions/create', icon: 'add_shopping_cart', keywords: ['create', 'order', 'beli', 'buy', 'transaction'] },
+                { title: 'Transaction Detail', description: 'GET /v1/trx/{ref_id}', url: 'https://sekalipay.com/api-docs/transactions/detail', icon: 'receipt_long', keywords: ['detail', 'status', 'ref_id'] },
+                { title: 'Leaderboard', description: 'GET /v1/leaderboard', url: 'https://sekalipay.com/api-docs/leaderboard', icon: 'leaderboard', keywords: ['leaderboard', 'top', 'ranking'] },
+                { title: 'My Ranking', description: 'GET /v1/leaderboard/profile', url: 'https://sekalipay.com/api-docs/leaderboard/profile', icon: 'person', keywords: ['my rank', 'profile', 'ranking'] },
+                { title: 'Sandbox Order', description: 'POST /v1/order/sandbox', url: 'https://sekalipay.com/api-docs/sandbox', icon: 'science', keywords: ['sandbox', 'test', 'testing', 'demo'] },
+                { title: 'Error Codes', description: 'API error reference', url: 'https://sekalipay.com/api-docs/errors', icon: 'error', keywords: ['error', 'code', 'invalid', 'unauthorized'] },
+                { title: 'Changelog', description: 'Perubahan API terbaru', url: 'https://sekalipay.com/api-docs/changelog', icon: 'history', keywords: ['changelog', 'perubahan', 'update', 'riwayat', 'versi', 'deprecated'] },
+            ],
+            search() {
+                if (this.query.length === 0) {
+                    this.results = [];
+                    this.showResults = false;
+                    return;
+                }
+                const q = this.query.toLowerCase();
+                this.results = this.endpoints.filter(e =>
+                    e.title.toLowerCase().includes(q) ||
+                    e.description.toLowerCase().includes(q) ||
+                    e.keywords.some(k => k.includes(q))
+                ).slice(0, 8);
+                this.showResults = true;
+            }
+        }
+    }
+</script>
+    <div class="flex flex-1 overflow-hidden">
+        
+        <aside
+    class="w-72 hidden lg:flex flex-col border-r border-slate-200 dark:border-[#232f48] bg-white dark:bg-[#111722] overflow-y-auto custom-scrollbar">
+    <div class="p-6">
+    
+    <div class="flex items-center gap-3 mb-8">
+        <div class="size-10 rounded-xl bg-blue-600/10 flex items-center justify-center text-blue-600">
+            <span class="material-symbols-outlined">api</span>
+        </div>
+        <div>
+            <p class="text-sm font-bold">Reseller API</p>
+            <p class="text-xs text-slate-500 font-medium tracking-wide">v1.0 (Latest)</p>
+        </div>
+    </div>
+
+    <nav class="space-y-6">
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Getting Started
+            </p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs">
+                    <span class="material-symbols-outlined text-lg">home</span> Overview
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/auth">
+                    <span class="material-symbols-outlined text-lg">vpn_key</span> Authentication
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/order-process">
+                    <span class="material-symbols-outlined text-lg">settings</span> Order Process Types
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Balance</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/balance">
+                    <span class="material-symbols-outlined text-lg">account_balance_wallet</span> Get Balance
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/balance/topup">
+                    <span class="material-symbols-outlined text-lg">add_card</span> Top Up
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/balance/mutations">
+                    <span class="material-symbols-outlined text-lg">receipt_long</span> Balance Mutations
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/balance/channels">
+                    <span class="material-symbols-outlined text-lg">payments</span> Payment Channels
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Items</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   bg-blue-600/10 text-blue-600"
+                    href="https://sekalipay.com/api-docs/items">
+                    <span class="material-symbols-outlined text-lg">inventory_2</span> List Items
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/items/detail">
+                    <span class="material-symbols-outlined text-lg">info</span> Item Detail
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/items/validation">
+                    <span class="material-symbols-outlined text-lg">verified</span> Account Validation
+                    <span
+                        class="ml-auto text-[9px] font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded">New</span>
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/items/stock-lock">
+                    <span class="material-symbols-outlined text-lg">lock</span> Stock Lock
+                    <span
+                        class="ml-auto text-[9px] font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded">New</span>
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Transactions</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/transactions">
+                    <span class="material-symbols-outlined text-lg">list_alt</span> List Transactions
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/transactions/create">
+                    <span class="material-symbols-outlined text-lg">add_shopping_cart</span> Create Transaction
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/transactions/tagihan">
+                    <span class="material-symbols-outlined text-lg">receipt_long</span> Bayar Tagihan
+                    <span class="ml-auto text-[9px] font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded">New</span>
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/transactions/detail">
+                    <span class="material-symbols-outlined text-lg">receipt_long</span> Transaction Detail
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Leaderboard</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/leaderboard">
+                    <span class="material-symbols-outlined text-lg">leaderboard</span> Top 10
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/leaderboard/profile">
+                    <span class="material-symbols-outlined text-lg">person</span> My Ranking
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Testing</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/sandbox">
+                    <span class="material-symbols-outlined text-lg">science</span> Sandbox Order
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Webhook</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/webhook">
+                    <span class="material-symbols-outlined text-lg">webhook</span> Configuration
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/webhook/events">
+                    <span class="material-symbols-outlined text-lg">notifications_active</span> Events & Payload
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/webhook/security">
+                    <span class="material-symbols-outlined text-lg">verified_user</span> Signature Verification
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Resources</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/errors">
+                    <span class="material-symbols-outlined text-lg">error</span> Error Codes
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/changelog">
+                    <span class="material-symbols-outlined text-lg">history</span> Changelog
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600 transition-all"
+                    href="https://sekalipay.com/contact-us">
+                    <span class="material-symbols-outlined text-lg">forum</span> Support
+                </a>
+            </div>
+        </div>
+    </nav>
+</div>
+</aside>
+
+
+<div x-data="{ open: false }" @toggle-sidebar.window="open = !open" @keydown.escape.window="open = false"
+    class="lg:hidden">
+
+    
+    <div x-show="open" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" @click="open = false"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[100]">
+    </div>
+
+    
+    <aside x-show="open" x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
+        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="-translate-x-full"
+        class="fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white dark:bg-[#111722] border-r border-slate-200 dark:border-[#232f48] z-[110] shadow-2xl flex flex-col">
+
+        
+        <div
+            class="sticky top-0 flex items-center justify-between p-4 border-b border-slate-200 dark:border-[#232f48] bg-white dark:bg-[#111722] z-10">
+            <div class="flex items-center gap-2">
+                <img src="/images/logo.png" alt="Logo" class="h-7 w-auto" />
+            </div>
+            <button @click="open = false"
+                class="size-10 rounded-xl bg-slate-100 dark:bg-[#1a212e] hover:bg-slate-200 dark:hover:bg-white/10 flex items-center justify-center transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+
+        
+        <div class="flex-1 overflow-y-auto custom-scrollbar">
+            <div class="p-6">
+    
+    <div class="flex items-center gap-3 mb-8">
+        <div class="size-10 rounded-xl bg-blue-600/10 flex items-center justify-center text-blue-600">
+            <span class="material-symbols-outlined">api</span>
+        </div>
+        <div>
+            <p class="text-sm font-bold">Reseller API</p>
+            <p class="text-xs text-slate-500 font-medium tracking-wide">v1.0 (Latest)</p>
+        </div>
+    </div>
+
+    <nav class="space-y-6">
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Getting Started
+            </p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs">
+                    <span class="material-symbols-outlined text-lg">home</span> Overview
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/auth">
+                    <span class="material-symbols-outlined text-lg">vpn_key</span> Authentication
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/order-process">
+                    <span class="material-symbols-outlined text-lg">settings</span> Order Process Types
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Balance</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/balance">
+                    <span class="material-symbols-outlined text-lg">account_balance_wallet</span> Get Balance
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/balance/topup">
+                    <span class="material-symbols-outlined text-lg">add_card</span> Top Up
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/balance/mutations">
+                    <span class="material-symbols-outlined text-lg">receipt_long</span> Balance Mutations
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/balance/channels">
+                    <span class="material-symbols-outlined text-lg">payments</span> Payment Channels
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Items</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   bg-blue-600/10 text-blue-600"
+                    href="https://sekalipay.com/api-docs/items">
+                    <span class="material-symbols-outlined text-lg">inventory_2</span> List Items
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/items/detail">
+                    <span class="material-symbols-outlined text-lg">info</span> Item Detail
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/items/validation">
+                    <span class="material-symbols-outlined text-lg">verified</span> Account Validation
+                    <span
+                        class="ml-auto text-[9px] font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded">New</span>
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/items/stock-lock">
+                    <span class="material-symbols-outlined text-lg">lock</span> Stock Lock
+                    <span
+                        class="ml-auto text-[9px] font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded">New</span>
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Transactions</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/transactions">
+                    <span class="material-symbols-outlined text-lg">list_alt</span> List Transactions
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/transactions/create">
+                    <span class="material-symbols-outlined text-lg">add_shopping_cart</span> Create Transaction
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/transactions/tagihan">
+                    <span class="material-symbols-outlined text-lg">receipt_long</span> Bayar Tagihan
+                    <span class="ml-auto text-[9px] font-bold uppercase tracking-widest bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 rounded">New</span>
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/transactions/detail">
+                    <span class="material-symbols-outlined text-lg">receipt_long</span> Transaction Detail
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Leaderboard</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/leaderboard">
+                    <span class="material-symbols-outlined text-lg">leaderboard</span> Top 10
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/leaderboard/profile">
+                    <span class="material-symbols-outlined text-lg">person</span> My Ranking
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Testing</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/sandbox">
+                    <span class="material-symbols-outlined text-lg">science</span> Sandbox Order
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Webhook</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/webhook">
+                    <span class="material-symbols-outlined text-lg">webhook</span> Configuration
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/webhook/events">
+                    <span class="material-symbols-outlined text-lg">notifications_active</span> Events & Payload
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/webhook/security">
+                    <span class="material-symbols-outlined text-lg">verified_user</span> Signature Verification
+                </a>
+            </div>
+        </div>
+
+        
+        <div>
+            <p class="px-3 text-[10px] font-bold uppercase tracking-widest text-slate-400 mb-2">Resources</p>
+            <div class="space-y-1">
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/errors">
+                    <span class="material-symbols-outlined text-lg">error</span> Error Codes
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-all
+                   text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600"
+                    href="https://sekalipay.com/api-docs/changelog">
+                    <span class="material-symbols-outlined text-lg">history</span> Changelog
+                </a>
+                <a wire:navigate.hover class="flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-blue-600/10 hover:text-blue-600 transition-all"
+                    href="https://sekalipay.com/contact-us">
+                    <span class="material-symbols-outlined text-lg">forum</span> Support
+                </a>
+            </div>
+        </div>
+    </nav>
+</div>
+        </div>
+    </aside>
+</div>
+        
+        <main class="flex-1 flex flex-col lg:flex-row overflow-y-auto overflow-x-hidden api-content">
+                
+    <div class="flex-1 lg:overflow-y-auto custom-scrollbar bg-white dark:bg-[#0a0c10]">
+        <div class="px-6 lg:px-12 py-6 border-b border-slate-100 dark:border-[#232f48]">
+            <div class="flex items-center gap-2 text-xs font-medium text-slate-500 uppercase tracking-widest">
+                <a class="hover:text-blue-600 transition-colors" href="https://sekalipay.com/api-docs">API
+                    Reference</a>
+                <span class="material-symbols-outlined text-[10px]">chevron_right</span>
+                <a class="hover:text-blue-600 transition-colors" href="#">Items</a>
+                <span class="material-symbols-outlined text-[10px]">chevron_right</span>
+                <span class="text-slate-900 dark:text-white">List Items</span>
+            </div>
+        </div>
+
+        <div class="px-6 lg:px-12 py-8 lg:max-w-4xl">
+            <div class="mb-12">
+                <div class="flex items-center gap-2 text-blue-600 font-bold text-sm mb-4">
+                    <span class="material-symbols-outlined text-lg">inventory_2</span>
+                    ITEMS
+                </div>
+                <h1 class="text-4xl lg:text-5xl font-black mb-6 tracking-tight">List Items</h1>
+                <p class="text-lg text-slate-500 dark:text-slate-400 leading-relaxed">
+                    Dapatkan daftar semua item/produk yang tersedia untuk dijual.
+                    Termasuk informasi harga reseller, stok, dan kategori.
+                </p>
+            </div>
+
+            <div
+                class="flex items-center gap-4 mb-10 p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/5">
+                <span
+                    class="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded font-mono font-bold text-sm tracking-widest">GET</span>
+                <code class="font-mono text-blue-600 text-lg">/v1/item</code>
+            </div>
+
+            
+            <section class="mb-12">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-600">filter_list</span>
+                    Query Parameters
+                </h3>
+                <div class="table-responsive rounded-xl border border-slate-200 dark:border-white/5">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-50 dark:bg-white/5 border-b border-slate-200 dark:border-white/5">
+                            <tr>
+                                <th class="px-4 py-3 font-bold">Parameter</th>
+                                <th class="px-4 py-3 font-bold">Type</th>
+                                <th class="px-4 py-3 font-bold">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 dark:divide-white/5">
+                            <tr>
+                                <td class="px-4 py-4 font-mono text-blue-600 font-bold">page</td>
+                                <td class="px-4 py-4 text-slate-500">integer</td>
+                                <td class="px-4 py-4 text-slate-400">Optional. Nomor halaman untuk pagination.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 font-mono text-blue-600 font-bold">per_page</td>
+                                <td class="px-4 py-4 text-slate-500">integer|string</td>
+                                <td class="px-4 py-4 text-slate-400">Optional. Jumlah item per halaman (default: 100, max:
+                                    500). Gunakan <code
+                                        class="bg-blue-600/20 text-blue-400 px-1.5 py-0.5 rounded">"all"</code> untuk
+                                    mendapatkan semua item dalam 1 request.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 font-mono text-blue-600 font-bold">updated_since</td>
+                                <td class="px-4 py-4 text-slate-500">string</td>
+                                <td class="px-4 py-4 text-slate-400">Optional. ISO 8601 timestamp. Hanya return item yang
+                                    diupdate setelah waktu ini. Gunakan nilai <code
+                                        class="bg-blue-600/20 text-blue-400 px-1.5 py-0.5 rounded">server_time</code> dari
+                                    response sebelumnya.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 font-mono text-blue-600 font-bold">category</td>
+                                <td class="px-4 py-4 text-slate-500">string</td>
+                                <td class="px-4 py-4 text-slate-400">Optional. Filter by category slug.</td>
+                            </tr>
+                            <tr>
+                                <td class="px-4 py-4 font-mono text-blue-600 font-bold">search</td>
+                                <td class="px-4 py-4 text-slate-500">string</td>
+                                <td class="px-4 py-4 text-slate-400">Optional. Cari berdasarkan nama produk.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            
+            <section class="mb-12">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-600">analytics</span>
+                    Response Item Fields
+                </h3>
+                <div class="space-y-4">
+                    <div class="flex flex-col gap-1 border-l-2 border-blue-600/30 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">id <span
+                                class="text-slate-500 font-normal">integer</span></span>
+                        <p class="text-sm text-slate-400">ID unik item.</p>
+                    </div>
+                    <div class="flex flex-col gap-1 border-l-2 border-slate-700 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">name <span
+                                class="text-slate-500 font-normal">string</span></span>
+                        <p class="text-sm text-slate-400">Nama item/variant.</p>
+                    </div>
+                    <div class="flex flex-col gap-1 border-l-2 border-slate-700 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">price <span
+                                class="text-slate-500 font-normal">integer</span></span>
+                        <p class="text-sm text-slate-400">Harga reseller dalam Rupiah.</p>
+                    </div>
+                    <div class="flex flex-col gap-1 border-l-2 border-slate-700 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">stock <span
+                                class="text-slate-500 font-normal">integer</span></span>
+                        <p class="text-sm text-slate-400">Jumlah stok tersedia.</p>
+                    </div>
+                    <div class="flex flex-col gap-1 border-l-2 border-slate-700 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">category <span
+                                class="text-slate-500 font-normal">string</span></span>
+                        <p class="text-sm text-slate-400">Nama kategori produk.</p>
+                    </div>
+                    <div class="flex flex-col gap-1 border-l-2 border-slate-700 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">order_process <span
+                                class="text-slate-500 font-normal">string</span></span>
+                        <p class="text-sm text-slate-400">Tipe pemrosesan item: <code class="text-xs">auto</code>, <code class="text-xs">manual</code>, <code class="text-xs">h2h</code>, atau <code class="text-xs">vip</code>.</p>
+                    </div>
+                    <div class="flex flex-col gap-1 border-l-2 border-slate-700 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">h2h_provider <span
+                                class="text-slate-500 font-normal">string|null</span></span>
+                        <p class="text-sm text-slate-400">Penanda bahwa item diproses host-to-host. Bernilai <code class="text-xs">"h2h"</code> untuk item H2H, <code class="text-xs">null</code> untuk selainnya. <strong>Bukan nama penyedia</strong> — pemasok tidak diungkap dan bisa berubah kapan saja tanpa memengaruhi Anda. Untuk membedakan alur pemrosesan, pakai <code class="text-xs">order_process</code>.</p>
+                    </div>
+                    <div class="flex flex-col gap-1 border-l-2 border-slate-700 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">provider_meta <span
+                                class="text-slate-500 font-normal">object|null</span></span>
+                        <p class="text-sm text-slate-400">Metadata capability tambahan item H2H. Field ini dapat berisi konfigurasi seperti <code class="text-xs">open_denom</code>, <code class="text-xs">min_qty</code>, dan <code class="text-xs">max_qty</code>.</p>
+                    </div>
+                    <div class="flex flex-col gap-1 border-l-2 border-slate-700 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">required_fields <span
+                                class="text-slate-500 font-normal">array|null</span></span>
+                        <p class="text-sm text-slate-400">Daftar field input yang harus dikirim saat membuat transaksi. Gunakan ini agar integrasi tetap seragam untuk provider lama maupun baru.</p>
+                    </div>
+                    <div class="flex flex-col gap-1 border-l-2 border-slate-700 pl-4 py-1">
+                        <span class="font-mono font-bold text-blue-600">validation <span
+                                class="text-slate-500 font-normal">object</span></span>
+                        <p class="text-sm text-slate-400">Metadata cek ID. Tampilkan tombol Check hanya jika <code class="text-xs">validation.available</code> bernilai <code class="text-xs">true</code>, lalu panggil <code class="text-xs">POST /v1/item/validate</code>.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-12">
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-blue-600">schema</span>
+                    Provider Contract
+                </h3>
+                <div class="rounded-2xl border border-blue-200 dark:border-blue-900/30 bg-blue-50 dark:bg-blue-900/10 p-6">
+                    <p class="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                        Response item diseragamkan dengan empat kunci utama:
+                        <code class="text-xs">order_process</code> untuk flow,
+                        <code class="text-xs">h2h_provider</code> sebagai penanda item host-to-host,
+                        <code class="text-xs">provider_meta</code> untuk capability khusus,
+                        <code class="text-xs">required_fields</code> untuk kebutuhan input order,
+                        dan <code class="text-xs">validation</code> untuk capability cek ID.
+                    </p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    
+    <div
+        class="w-full lg:w-[450px] border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-[#232f48] bg-slate-50 dark:bg-[#0d121c] flex flex-col">
+        <div class="sticky top-0">
+            <div class="px-6 py-4 border-b border-slate-200 dark:border-[#232f48] bg-slate-50 dark:bg-[#0d121c]">
+                <button class="px-3 py-1.5 rounded-lg text-xs font-bold bg-blue-600 text-white">cURL</button>
+            </div>
+            <div class="p-6">
+                <div class="mb-8">
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Example Request</h4>
+                    <div class="bg-[#1a212e] rounded-xl p-5 border border-white/5 shadow-2xl overflow-x-auto">
+                        <pre class="code-block text-[13px] text-blue-300 leading-relaxed"><span class="text-slate-500"># Full sync (pertama kali):</span>
+    <span class="text-emerald-400">curl</span> --request GET \
+      --url <span class="text-amber-300">'https://sekalipay.com/api/v1/item?per_page=all'</span> \
+      --header <span class="text-amber-300">'X-APIKEY: YOUR_API_KEY'</span>
+
+    <span class="text-slate-500"># Delta sync (selanjutnya, gunakan server_time dari response sebelumnya):</span>
+    <span class="text-emerald-400">curl</span> --request GET \
+      --url <span class="text-amber-300">'https://sekalipay.com/api/v1/item?per_page=all&updated_since=2026-02-26T14:00:00Z'</span> \
+      --header <span class="text-amber-300">'X-APIKEY: YOUR_API_KEY'</span>
+
+    <span class="text-slate-500"># With filters:</span>
+    <span class="text-emerald-400">curl</span> --request GET \
+      --url <span class="text-amber-300">'https://sekalipay.com/api/v1/item?category=1&search=Netflix&page=1&per_page=50'</span> \
+      --header <span class="text-amber-300">'X-APIKEY: YOUR_API_KEY'</span></pre>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-4">Response Sample</h4>
+                    <div class="bg-[#1a212e] rounded-xl p-5 border border-white/5 shadow-2xl overflow-x-auto">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="size-2 rounded-full bg-emerald-500"></span>
+                            <span class="text-[10px] font-bold text-emerald-500">200 OK</span>
+                        </div>
+                        <pre class="code-block text-[13px] text-slate-300 leading-relaxed">{
+      <span class="text-blue-400">"message"</span>: <span class="text-emerald-400">"OK"</span>,
+      <span class="text-blue-400">"data"</span>: [
+        {
+          <span class="text-blue-400">"id"</span>: <span class="text-amber-300">1</span>,
+          <span class="text-blue-400">"name"</span>: <span class="text-emerald-400">"Aplikasi Premium"</span>,
+          <span class="text-blue-400">"icon"</span>: <span class="text-emerald-400">"app-icon.png"</span>,
+          <span class="text-blue-400">"products"</span>: [
+            {
+              <span class="text-blue-400">"id"</span>: <span class="text-amber-300">10</span>,
+              <span class="text-blue-400">"name"</span>: <span class="text-emerald-400">"Gemini Advanced"</span>,
+              <span class="text-blue-400">"image"</span>: <span class="text-emerald-400">"gemini.png"</span>,
+              <span class="text-blue-400">"variants"</span>: [
+                {
+                  <span class="text-blue-400">"id"</span>: <span class="text-amber-300">3342</span>,
+                  <span class="text-blue-400">"sku"</span>: <span class="text-emerald-400">"GA-1BAB"</span>,
+                  <span class="text-blue-400">"name"</span>: <span class="text-emerald-400">"12 Bulan"</span>,
+                  <span class="text-blue-400">"price"</span>: <span class="text-amber-300">6000</span>,
+                  <span class="text-blue-400">"order_process"</span>: <span class="text-emerald-400">"h2h"</span>,
+                  <span class="text-blue-400">"h2h_provider"</span>: <span class="text-emerald-400">"h2h"</span>,
+                  <span class="text-blue-400">"provider_meta"</span>: {
+                    <span class="text-blue-400">"open_denom"</span>: <span class="text-amber-300">true</span>,
+                    <span class="text-blue-400">"min_qty"</span>: <span class="text-amber-300">10000</span>,
+                    <span class="text-blue-400">"max_qty"</span>: <span class="text-amber-300">10000000</span>,
+                    <span class="text-blue-400">"step_qty"</span>: <span class="text-amber-300">1</span>,
+                    <span class="text-blue-400">"qty_label"</span>: <span class="text-emerald-400">"Nominal"</span>
+                  },
+                  <span class="text-blue-400">"required_fields"</span>: [
+                    {
+                      <span class="text-blue-400">"key"</span>: <span class="text-emerald-400">"note"</span>,
+                      <span class="text-blue-400">"label"</span>: <span class="text-emerald-400">"User ID"</span>,
+                      <span class="text-blue-400">"required"</span>: <span class="text-amber-300">true</span>
+                    },
+                    {
+                      <span class="text-blue-400">"key"</span>: <span class="text-emerald-400">"provider_qty"</span>,
+                      <span class="text-blue-400">"label"</span>: <span class="text-emerald-400">"Nominal"</span>,
+                      <span class="text-blue-400">"required"</span>: <span class="text-amber-300">true</span>,
+                      <span class="text-blue-400">"min"</span>: <span class="text-amber-300">10000</span>,
+                      <span class="text-blue-400">"max"</span>: <span class="text-amber-300">10000000</span>
+                    }
+                  ],
+                  <span class="text-blue-400">"validation"</span>: {
+                    <span class="text-blue-400">"available"</span>: <span class="text-amber-300">true</span>,
+                    <span class="text-blue-400">"endpoint"</span>: <span class="text-emerald-400">"/api/v1/item/validate"</span>,
+                    <span class="text-blue-400">"requires_zone_id"</span>: <span class="text-amber-300">true</span>,
+                    <span class="text-blue-400">"fields"</span>: [
+                      { <span class="text-blue-400">"key"</span>: <span class="text-emerald-400">"customer_id"</span>, <span class="text-blue-400">"label"</span>: <span class="text-emerald-400">"User ID"</span>, <span class="text-blue-400">"required"</span>: <span class="text-amber-300">true</span> },
+                      { <span class="text-blue-400">"key"</span>: <span class="text-emerald-400">"zone_id"</span>, <span class="text-blue-400">"label"</span>: <span class="text-emerald-400">"Server ID"</span>, <span class="text-blue-400">"required"</span>: <span class="text-amber-300">true</span> }
+                    ]
+                  },
+                  <span class="text-blue-400">"stock"</span>: <span class="text-amber-300">50</span>,
+                  <span class="text-blue-400">"updated_at"</span>: <span class="text-emerald-400">"2026-02-26T14:01:10.000000Z"</span>
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      <span class="text-blue-400">"meta"</span>: {
+        <span class="text-blue-400">"total_items"</span>: <span class="text-amber-300">2891</span>,
+        <span class="text-blue-400">"is_delta"</span>: <span class="text-amber-300">false</span>
+      },
+      <span class="text-blue-400">"server_time"</span>: <span class="text-emerald-400">"2026-02-26T22:00:00+07:00"</span>
+    }</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </main>
+    </div>
+
+    
+    <div
+        class="fixed top-0 right-0 -z-10 w-[600px] h-[600px] bg-blue-600/5 blur-[120px] rounded-full pointer-events-none">
+    </div>
+    <div
+        class="fixed bottom-0 left-0 -z-10 w-[400px] h-[400px] bg-blue-600/5 blur-[100px] rounded-full pointer-events-none">
+    </div>
+
+    
+    <a href="https://sekalipay.com/contact-us"
+        class="fixed bottom-6 right-6 flex items-center gap-2 bg-white dark:bg-[#1a212e] text-slate-700 dark:text-white px-5 py-3 rounded-xl shadow-2xl border border-slate-200 dark:border-[#232f48] hover:scale-105 transition-transform z-[60]">
+        <span class="material-symbols-outlined text-blue-600">chat_bubble</span>
+        <span class="text-sm font-bold">Feedback</span>
+    </a>
+
+    
+    <script src="https://sekalipay.com/vendor/livewire/livewire.min.js?id=f084fdfb"   data-csrf="iZZ13PEneKBowoh6CXDBOR50Oo4JT0HmOK1Fq883" data-update-uri="/livewire/update" data-navigate-once="true"></script>
+
+    </body>
+
+</html>
