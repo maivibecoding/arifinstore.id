@@ -24,7 +24,7 @@ const BANNERS: BannerItem[] = [
     highlight: "Tanpa Ribet, Otomatis 5 Detik!",
     subtitle: "DANA, ShopeePay, GoPay, OVO, LinkAja, i.saku, DOKU & AstraPay. Bebas biaya admin tersembunyi via QRIS resmi.",
     buttonText: "Top Up Sekarang",
-    buttonLink: "#topup-section",
+    buttonLink: "/topup-e-wallet",
     bgGradient: "from-blue-50 via-sky-50 to-indigo-50 border-blue-200",
     tagColor: "bg-blue-600 text-white",
   },

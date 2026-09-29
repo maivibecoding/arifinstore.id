@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import PromoBanner from "@/components/PromoBanner";
 import CategorySilo from "@/components/CategorySilo";
-import EMoneyTopupSection from "@/components/EMoneyTopupSection";
 import DigitalProductsSection from "@/components/DigitalProductsSection";
 import BlogSection from "@/components/BlogSection";
 import Footer from "@/components/Footer";
@@ -13,10 +12,12 @@ import PromoPopup from "@/components/PromoPopup";
 import OrderTrackerModal from "@/components/OrderTrackerModal";
 import AdminDashboardModal from "@/components/AdminDashboardModal";
 import AuthModal, { AuthUser } from "@/components/AuthModal";
-import { EMoneyBrand, NominalItem, DigitalProduct } from "@/types";
+import { DigitalProduct } from "@/types";
+import { ShieldCheck, Zap, Clock, MessageCircle, ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { STORE_INFO } from "@/lib/constants";
 
 export default function HomePage() {
-  const [selectedBrandId, setSelectedBrandId] = useState("dana");
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
   const [trackerModalOpen, setTrackerModalOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
@@ -56,23 +57,6 @@ export default function HomePage() {
     basePrice: number;
   } | null>(null);
 
-  const handleEMoneyCheckout = (data: {
-    type: "e-money";
-    brand: EMoneyBrand;
-    nominal: NominalItem;
-    phoneNumber: string;
-    accountName: string;
-  }) => {
-    setCheckoutOrder({
-      type: "e-money",
-      title: `${data.brand.name} Rp ${data.nominal.label}`,
-      targetAccount: data.phoneNumber,
-      accountHolderName: data.accountName,
-      basePrice: data.nominal.price,
-    });
-    setCheckoutModalOpen(true);
-  };
-
   const handleDigitalCheckout = (data: {
     type: "digital";
     product: DigitalProduct;
@@ -85,14 +69,6 @@ export default function HomePage() {
       basePrice: data.product.price,
     });
     setCheckoutModalOpen(true);
-  };
-
-  const handleBrandSelectFromSilo = (brandId: string) => {
-    setSelectedBrandId(brandId);
-    const element = document.getElementById("topup-section");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   return (
@@ -109,14 +85,53 @@ export default function HomePage() {
       {/* 2. Hero Promotional Banner Carousel */}
       <PromoBanner />
 
-      {/* 3. Category Silo Navigation (HotelMurah Clean Style) */}
-      <CategorySilo onSelectBrand={handleBrandSelectFromSilo} />
+      {/* 3. Category Silo Navigation (HotelMurah Clean Style with pilih-klik e-wallet grid) */}
+      <CategorySilo />
 
-      {/* 4. E-Money Top-Up Section (19 Fixed Denominations + Sekalipay Open Denom) */}
-      <EMoneyTopupSection
-        selectedBrandId={selectedBrandId}
-        onCheckout={handleEMoneyCheckout}
-      />
+      {/* 4. Keunggulan Arifin Store (HotelMurah Style Trust Badges) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#0066cc] flex items-center justify-center shrink-0">
+              <Clock className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-xs font-bold text-slate-900">Proses 5 Detik</h3>
+              <p className="text-[11px] text-slate-500">Saldo otomatis masuk</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+              <Zap className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-xs font-bold text-slate-900">QRIS All Payment</h3>
+              <p className="text-[11px] text-slate-500">BCA, BRI, DANA, GoPay</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-xs font-bold text-slate-900">Garansi 100%</h3>
+              <p className="text-[11px] text-slate-500">Uang kembali / ganti baru</p>
+            </div>
+          </div>
+
+          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-2xs flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+              <MessageCircle className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-xs font-bold text-slate-900">Bantuan CS 24 Jam</h3>
+              <p className="text-[11px] text-slate-500">WhatsApp fast response</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* 5. Digital Products Section (7 ProdSeller Curated Items) */}
       <DigitalProductsSection onCheckout={handleDigitalCheckout} />

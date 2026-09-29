@@ -83,7 +83,7 @@ export default function TopupEWalletPage() {
                 </p>
 
                 <Link
-                  href="/#topup-section"
+                  href={`/topup/${brand.id}`}
                   className="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-center text-white bg-[#35508d] hover:bg-[#273b68] shadow-xs flex items-center justify-center gap-1.5 transition-all"
                 >
                   <span>Beli Saldo {brand.name}</span>

@@ -78,7 +78,7 @@ export default function Navbar({
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1 lg:gap-2">
             <Link
-              href="/#topup-section"
+              href="/topup-e-wallet"
               className="px-3 py-2 text-sm font-semibold text-white/90 hover:text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-1.5"
             >
               <Zap className="w-4 h-4 text-amber-300" />
@@ -281,7 +281,7 @@ export default function Navbar({
             )}
 
             <Link
-              href="/#topup-section"
+              href="/topup-e-wallet"
               onClick={() => setMobileMenuOpen(false)}
               className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-semibold text-white hover:bg-white/10"
             >

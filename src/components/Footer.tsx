@@ -91,23 +91,23 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#topup-section" className="hover:text-white transition-colors">
+                <Link href="/topup/dana" className="hover:text-white transition-colors">
                   Top Up DANA Bebas Biaya
                 </Link>
               </li>
               <li>
-                <Link href="/#topup-section" className="hover:text-white transition-colors">
+                <Link href="/topup/gopay" className="hover:text-white transition-colors">
                   Top Up GoPay Instan
                 </Link>
               </li>
               <li>
-                <Link href="/#topup-section" className="hover:text-white transition-colors">
+                <Link href="/topup/shopeepay" className="hover:text-white transition-colors">
                   Top Up ShopeePay
                 </Link>
               </li>
               <li>
-                <Link href="/#topup-section" className="hover:text-white transition-colors">
-                  Top Up OVO & LinkAja
+                <Link href="/topup/ovo" className="hover:text-white transition-colors">
+                  Top Up OVO Murah
                 </Link>
               </li>
             </ul>
