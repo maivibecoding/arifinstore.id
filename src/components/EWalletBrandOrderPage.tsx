@@ -34,7 +34,7 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
     EMONEY_BRANDS[0];
 
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [selectedNominal, setSelectedNominal] = useState<NominalItem>(FIXED_NOMINALS[0]);
+  const [selectedNominal, setSelectedNominal] = useState<NominalItem | null>(null);
   const [accountName, setAccountName] = useState<string | null>(null);
   const [isValidating, setIsValidating] = useState(false);
 
@@ -80,16 +80,22 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
       alert("Silakan masukkan nomor handphone yang valid (minimal 10 digit).");
       return;
     }
+    if (!selectedNominal) {
+      alert("Silakan pilih nominal saldo terlebih dahulu.");
+      return;
+    }
     setCheckoutModalOpen(true);
   };
 
-  const checkoutOrder = {
-    type: "e-money" as const,
-    title: `${brand.name} Rp ${selectedNominal.label}`,
-    targetAccount: phoneNumber,
-    accountHolderName: accountName || "Terverifikasi",
-    basePrice: selectedNominal.price,
-  };
+  const checkoutOrder = selectedNominal
+    ? {
+        type: "e-money" as const,
+        title: `${brand.name} Rp ${selectedNominal.label}`,
+        targetAccount: phoneNumber,
+        accountHolderName: accountName || "Terverifikasi",
+        basePrice: selectedNominal.price,
+      }
+    : null;
 
   return (
     <main className="min-h-screen flex flex-col bg-[#f4f6f9]">
@@ -221,7 +227,7 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
               {FIXED_NOMINALS.map((nom) => {
-                const isSelected = selectedNominal.amount === nom.amount;
+                const isSelected = selectedNominal?.amount === nom.amount;
                 return (
                   <button
                     key={nom.amount}
@@ -258,12 +264,18 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
               <span className="text-xs text-slate-500 uppercase tracking-wider font-bold">
                 Rincian Tagihan Anda
               </span>
-              <div className="text-lg sm:text-2xl font-black text-slate-900">
-                {brand.name} Rp {selectedNominal.label}
-                <span className="text-sm text-slate-600 font-normal ml-2">
-                  Total Bayar: <strong className="text-emerald-600 font-bold">{formatRupiah(selectedNominal.price)}</strong>
-                </span>
-              </div>
+              {selectedNominal ? (
+                <div className="text-lg sm:text-2xl font-black text-slate-900">
+                  {brand.name} Rp {selectedNominal.label}
+                  <span className="text-sm text-slate-600 font-normal ml-2">
+                    Total Bayar: <strong className="text-emerald-600 font-bold">{formatRupiah(selectedNominal.price)}</strong>
+                  </span>
+                </div>
+              ) : (
+                <div className="text-sm sm:text-base font-semibold text-slate-400 py-1">
+                  Silakan pilih salah satu nominal di atas untuk melanjutkan
+                </div>
+              )}
               <p className="text-xs text-slate-500 flex items-center gap-1 justify-center md:justify-start">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                 <span>Bayar otomatis via QRIS (BCA, Mandiri, BRI, DANA, GoPay, OVO, dll.)</span>
@@ -272,9 +284,14 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
 
             <button
               type="submit"
-              className="w-full md:w-auto px-8 py-3.5 rounded-xl text-sm sm:text-base font-extrabold text-white bg-[#35508d] hover:bg-[#273b68] shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+              disabled={!selectedNominal}
+              className={`w-full md:w-auto px-8 py-3.5 rounded-xl text-sm sm:text-base font-extrabold transition-all flex items-center justify-center gap-2 ${
+                selectedNominal
+                  ? "text-white bg-[#35508d] hover:bg-[#273b68] shadow-md hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                  : "text-slate-400 bg-slate-200 cursor-not-allowed"
+              }`}
             >
-              <span>Lanjutkan Pembayaran</span>
+              <span>{selectedNominal ? "Lanjutkan Pembayaran" : "Pilih Nominal Dulu"}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

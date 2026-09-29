@@ -33,7 +33,7 @@ export default function EMoneyTopupSection({
     () => EMONEY_BRANDS.find((b) => b.id === selectedBrandId) || EMONEY_BRANDS[0]
   );
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [selectedNominal, setSelectedNominal] = useState<NominalItem>(FIXED_NOMINALS[0]);
+  const [selectedNominal, setSelectedNominal] = useState<NominalItem | null>(null);
   const [accountName, setAccountName] = useState<string | null>(null);
   const [isValidating, setIsValidating] = useState(false);
 
@@ -62,6 +62,10 @@ export default function EMoneyTopupSection({
     e.preventDefault();
     if (!phoneNumber || phoneNumber.length < 10) {
       alert("Silakan masukkan nomor handphone yang valid (minimal 10 digit).");
+      return;
+    }
+    if (!selectedNominal) {
+      alert("Silakan pilih nominal saldo terlebih dahulu.");
       return;
     }
 
@@ -201,7 +205,7 @@ export default function EMoneyTopupSection({
 
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
             {FIXED_NOMINALS.map((nominal) => {
-              const isSelected = selectedNominal.amount === nominal.amount;
+              const isSelected = selectedNominal?.amount === nominal.amount;
               return (
                 <button
                   key={nominal.amount}
@@ -238,12 +242,18 @@ export default function EMoneyTopupSection({
             <span className="text-xs text-slate-500 uppercase tracking-wider font-bold">
               Rincian Pembelian Anda
             </span>
-            <div className="text-lg sm:text-2xl font-black text-slate-900">
-              {selectedBrand.name} Rp {selectedNominal.label}
-              <span className="text-sm text-slate-600 font-normal ml-2">
-                Total: <strong className="text-emerald-600 font-bold">{formatRupiah(selectedNominal.price)}</strong>
-              </span>
-            </div>
+            {selectedNominal ? (
+              <div className="text-lg sm:text-2xl font-black text-slate-900">
+                {selectedBrand.name} Rp {selectedNominal.label}
+                <span className="text-sm text-slate-600 font-normal ml-2">
+                  Total: <strong className="text-emerald-600 font-bold">{formatRupiah(selectedNominal.price)}</strong>
+                </span>
+              </div>
+            ) : (
+              <div className="text-sm sm:text-base font-semibold text-slate-400 py-1">
+                Silakan pilih nominal di atas untuk melanjutkan
+              </div>
+            )}
             <p className="text-xs text-slate-500 flex items-center gap-1 justify-center md:justify-start">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
               <span>Pembayaran QRIS All Bank & E-Wallet (Proses Otomatis 5 Detik)</span>
@@ -252,9 +262,14 @@ export default function EMoneyTopupSection({
 
           <button
             type="submit"
-            className="w-full md:w-auto px-8 py-3.5 rounded-xl text-sm sm:text-base font-extrabold text-white bg-[#35508d] hover:bg-[#273b68] shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+            disabled={!selectedNominal}
+            className={`w-full md:w-auto px-8 py-3.5 rounded-xl text-sm sm:text-base font-extrabold transition-all flex items-center justify-center gap-2 ${
+              selectedNominal
+                ? "text-white bg-[#35508d] hover:bg-[#273b68] shadow-md hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+                : "text-slate-400 bg-slate-200 cursor-not-allowed"
+            }`}
           >
-            <span>Beli Sekarang</span>
+            <span>{selectedNominal ? "Beli Sekarang" : "Pilih Nominal Dulu"}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
