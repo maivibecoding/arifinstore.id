@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -7,6 +7,12 @@ const jakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
   weight: ["300", "400", "500", "600", "700", "800"],
 });
+
+export const viewport: Viewport = {
+  themeColor: "#35508d",
+  width: "device-width",
+  initialScale: 1,
+};
 
 export const metadata: Metadata = {
   title: {
@@ -59,8 +65,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className={`${jakarta.variable} dark antialiased scroll-smooth`}>
-      <body className="min-h-screen flex flex-col mesh-gradient-bg text-slate-100 selection:bg-indigo-500 selection:text-white">
+    <html lang="id" className={`${jakarta.variable} antialiased scroll-smooth`}>
+      <head>
+        <meta name="apple-mobile-web-app-status-bar-style" content="#35508d" />
+        <meta name="msapplication-navbutton-color" content="#35508d" />
+      </head>
+      <body className="min-h-screen flex flex-col bg-[#f4f6f9] text-slate-800 selection:bg-[#0066cc] selection:text-white">
         {children}
       </body>
     </html>

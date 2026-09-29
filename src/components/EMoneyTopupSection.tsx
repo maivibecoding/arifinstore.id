@@ -8,12 +8,10 @@ import { formatRupiah } from "@/lib/utils";
 import {
   Smartphone,
   CheckCircle2,
-  AlertCircle,
   Zap,
-  CreditCard,
   ShieldCheck,
   ArrowRight,
-  Info,
+  Check,
 } from "lucide-react";
 
 interface EMoneyTopupSectionProps {
@@ -51,10 +49,9 @@ export default function EMoneyTopupSection({
     if (cleanNumber.length >= 10) {
       setIsValidating(true);
       const timer = setTimeout(() => {
-        // Simulated response based on typical Sekalipay Account Validation
         setAccountName("MOKHAMMAD ARIFIN ILHAM");
         setIsValidating(false);
-      }, 500);
+      }, 400);
       return () => clearTimeout(timer);
     } else {
       setAccountName(null);
@@ -78,41 +75,41 @@ export default function EMoneyTopupSection({
   };
 
   return (
-    <section id="topup-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 scroll-mt-24">
+    <section id="topup-section" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 scroll-mt-24">
       {/* Section Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-3">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-amber-300 bg-amber-500/10 border border-amber-500/20 mb-2">
-            <Zap className="w-3.5 h-3.5" />
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-[#35508d] bg-blue-100 border border-blue-200 mb-1.5">
+            <Zap className="w-3.5 h-3.5 text-[#0066cc]" />
             Layanan Top-Up 24 Jam
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-            Isi Saldo <span className="text-gradient-neon">E-Money & E-Wallet</span>
+          <h2 className="text-xl sm:text-2xl font-black text-slate-900">
+            Isi Saldo <span className="text-[#0066cc]">E-Money & E-Wallet</span>
           </h2>
-          <p className="text-sm text-slate-400 mt-1">
-            Pilihan nominal tetap dari 10.000 s/d 100.000 via provider Sekalipay bebas nominal
+          <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
+            19 pilihan nominal tetap (10.000 s/d 100.000) dari provider Sekalipay Bebas Nominal
           </p>
         </div>
 
         {/* Sekalipay Provider Badge */}
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl glass-panel text-xs text-slate-300 self-start md:self-auto">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-          <span>Kode Sekalipay: <strong className="text-indigo-400 font-mono">{selectedBrand.code}</strong> (Open Denom)</span>
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-600 shadow-2xs self-start md:self-auto">
+          <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
+          <span>Sekalipay Code: <strong className="text-[#0066cc] font-mono">{selectedBrand.code}</strong> (Open Denom)</span>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {/* Step 1: Pilih E-Money Brand */}
-        <div className="glass-panel p-6 rounded-3xl space-y-4">
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-600 text-xs font-bold">1</span>
+            <h3 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
+              <span className="step-badge">1</span>
               Pilih Layanan E-Money
             </h3>
-            <span className="text-xs text-slate-400">8 E-Wallet Tersedia</span>
+            <span className="text-xs font-medium text-slate-500">8 E-Wallet Tersedia</span>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2.5">
             {EMONEY_BRANDS.map((brand) => {
               const isSelected = selectedBrand.id === brand.id;
               return (
@@ -120,12 +117,17 @@ export default function EMoneyTopupSection({
                   key={brand.id}
                   type="button"
                   onClick={() => setSelectedBrand(brand)}
-                  className={`p-3 rounded-2xl flex flex-col items-center justify-center gap-2 border transition-all cursor-pointer ${
+                  className={`p-3 rounded-xl flex flex-col items-center justify-center gap-2 border transition-all cursor-pointer relative ${
                     isSelected
-                      ? "glass-card-active"
-                      : "glass-card hover:border-slate-500"
+                      ? "clean-card-selected"
+                      : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/60"
                   }`}
                 >
+                  {isSelected && (
+                    <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-[#0066cc] flex items-center justify-center text-white text-[10px]">
+                      <Check className="w-3 h-3 stroke-[3]" />
+                    </div>
+                  )}
                   <div className="relative w-10 h-10">
                     <Image
                       src={brand.icon}
@@ -134,11 +136,11 @@ export default function EMoneyTopupSection({
                       className="object-contain"
                     />
                   </div>
-                  <span className="text-xs font-bold text-slate-200">
+                  <span className="text-xs font-bold text-slate-800">
                     {brand.name}
                   </span>
                   {brand.badge && (
-                    <span className="text-[9px] px-1.5 py-0.5 rounded-full font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                    <span className="text-[9px] px-1.5 py-0.2 rounded-md font-bold bg-amber-100 text-amber-800 border border-amber-200">
                       {brand.badge}
                     </span>
                   )}
@@ -149,41 +151,44 @@ export default function EMoneyTopupSection({
         </div>
 
         {/* Step 2: Input Nomor HP & Auto Cek Nama Akun */}
-        <div className="glass-panel p-6 rounded-3xl space-y-4">
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-600 text-xs font-bold">2</span>
+            <h3 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
+              <span className="step-badge">2</span>
               Masukkan Nomor Akun {selectedBrand.name}
             </h3>
-            <span className="text-xs text-slate-400">Verifikasi Otomatis</span>
+            <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              Inquiry Otomatis
+            </span>
           </div>
 
           <div className="relative max-w-xl">
             <div className="relative">
-              <Smartphone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <Smartphone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 placeholder={selectedBrand.placeholder}
-                className="w-full pl-12 pr-4 py-3.5 rounded-2xl glass-input text-base font-mono tracking-wider"
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-300 text-sm sm:text-base font-mono text-slate-800 focus:outline-none focus:border-[#0066cc] focus:ring-2 focus:ring-[#0066cc]/15 bg-white"
                 required
               />
             </div>
 
             {/* Account Validation Status Indicator */}
             {isValidating && (
-              <div className="mt-2.5 flex items-center gap-2 text-xs text-indigo-400 animate-pulse">
-                <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping" />
+              <div className="mt-2 flex items-center gap-2 text-xs text-[#0066cc] animate-pulse">
+                <span className="w-2 h-2 rounded-full bg-[#0066cc] animate-ping" />
                 <span>Memeriksa nama pemilik akun {selectedBrand.name}...</span>
               </div>
             )}
 
             {accountName && !isValidating && (
-              <div className="mt-2.5 p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-2 text-xs text-emerald-300">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <div className="mt-2.5 p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2 text-xs text-emerald-800">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>
-                  Akun Ditemukan: <strong>{accountName}</strong> (Silakan pastikan nama sudah sesuai)
+                  Nama Akun: <strong>{accountName}</strong> (Silakan pastikan nama sudah sesuai)
                 </span>
               </div>
             )}
@@ -191,18 +196,18 @@ export default function EMoneyTopupSection({
         </div>
 
         {/* Step 3: Pilih 19 Nominal Tetap */}
-        <div className="glass-panel p-6 rounded-3xl space-y-4">
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-            <h3 className="text-base font-bold text-white flex items-center gap-2">
-              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-indigo-600 text-xs font-bold">3</span>
+            <h3 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
+              <span className="step-badge">3</span>
               Pilih Nominal Top-Up (19 Pilihan Tetap)
             </h3>
-            <p className="text-xs text-slate-400">
-              *Diambil dari produk Sekalipay Bebas Nominal untuk tarif hemat
+            <p className="text-xs text-slate-500">
+              *Tarif hemat diambil dari produk Sekalipay Bebas Nominal
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5">
             {FIXED_NOMINALS.map((nominal) => {
               const isSelected = selectedNominal.amount === nominal.amount;
               return (
@@ -210,25 +215,25 @@ export default function EMoneyTopupSection({
                   key={nominal.amount}
                   type="button"
                   onClick={() => setSelectedNominal(nominal)}
-                  className={`p-3.5 rounded-2xl flex flex-col text-left border transition-all cursor-pointer relative overflow-hidden ${
+                  className={`p-3 rounded-xl flex flex-col text-left border transition-all cursor-pointer relative overflow-hidden ${
                     isSelected
-                      ? "glass-card-active scale-[1.02]"
-                      : "glass-card hover:border-slate-500"
+                      ? "clean-card-selected scale-[1.02]"
+                      : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/70"
                   }`}
                 >
                   {nominal.popular && (
-                    <span className="absolute top-0 right-0 bg-indigo-600 text-[9px] font-bold text-white px-2 py-0.5 rounded-bl-lg">
+                    <span className="absolute top-0 right-0 bg-red-600 text-[9px] font-bold text-white px-1.5 py-0.2 rounded-bl-md">
                       Laris
                     </span>
                   )}
-                  <span className="text-sm font-extrabold text-white">
+                  <span className="text-xs sm:text-sm font-extrabold text-slate-900">
                     Rp {nominal.label}
                   </span>
-                  <div className="mt-2 flex items-baseline justify-between w-full">
-                    <span className="text-xs font-bold text-emerald-400">
+                  <div className="mt-1.5 flex items-baseline justify-between w-full">
+                    <span className="text-xs font-bold text-[#0066cc]">
                       {formatRupiah(nominal.price)}
                     </span>
-                    <span className="text-[10px] text-slate-500 line-through">
+                    <span className="text-[10px] text-slate-400 line-through">
                       {formatRupiah(nominal.originalPrice)}
                     </span>
                   </div>
@@ -239,29 +244,29 @@ export default function EMoneyTopupSection({
         </div>
 
         {/* Checkout Bar / Summary */}
-        <div className="glass-panel p-6 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-4 border-indigo-500/30">
+        <div className="bg-white p-5 sm:p-6 rounded-2xl border border-blue-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="space-y-1 text-center md:text-left">
-            <span className="text-xs text-slate-400 uppercase tracking-wider font-semibold">
-              Rincian Pembelian
+            <span className="text-xs text-slate-500 uppercase tracking-wider font-bold">
+              Rincian Pembelian Anda
             </span>
-            <div className="text-xl sm:text-2xl font-black text-white">
+            <div className="text-lg sm:text-2xl font-black text-slate-900">
               {selectedBrand.name} Rp {selectedNominal.label}
-              <span className="text-sm text-slate-400 font-normal ml-2">
-                Total: <strong className="text-emerald-400 font-bold">{formatRupiah(selectedNominal.price)}</strong>
+              <span className="text-sm text-slate-600 font-normal ml-2">
+                Total: <strong className="text-emerald-600 font-bold">{formatRupiah(selectedNominal.price)}</strong>
               </span>
             </div>
-            <p className="text-xs text-slate-400 flex items-center gap-1 justify-center md:justify-start">
-              <ShieldCheck className="w-3.5 h-3.5 text-indigo-400" />
-              <span>Pembayaran QRIS Otomatis (Proses 5 Detik)</span>
+            <p className="text-xs text-slate-500 flex items-center gap-1 justify-center md:justify-start">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Pembayaran QRIS All Bank & E-Wallet (Proses Otomatis 5 Detik)</span>
             </p>
           </div>
 
           <button
             type="submit"
-            className="w-full md:w-auto px-8 py-4 rounded-2xl text-base font-extrabold text-white bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-600 hover:from-indigo-600 hover:to-pink-700 shadow-xl shadow-indigo-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="w-full md:w-auto px-8 py-3.5 rounded-xl text-sm sm:text-base font-extrabold text-white bg-[#35508d] hover:bg-[#273b68] shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <span>Beli Sekarang</span>
-            <ArrowRight className="w-5 h-5" />
+            <ArrowRight className="w-4 h-4" />
           </button>
         </div>
       </form>

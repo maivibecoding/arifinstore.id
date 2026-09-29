@@ -15,41 +15,41 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="w-full glass-panel border-t border-white/10 mt-16 bg-slate-950/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <footer className="w-full bg-[#273b68] text-white border-t border-white/10 mt-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Col 1 & 2: Brand Information */}
-          <div className="lg:col-span-2 space-y-4">
-            <div className="relative h-12 w-48">
+          <div className="lg:col-span-2 space-y-3.5">
+            <div className="relative h-10 w-44 bg-white/10 rounded-lg p-1 flex items-center justify-center">
               <Image
                 src="/assets/logo464x127.png"
                 alt="Arifin Store"
                 fill
-                className="object-contain"
+                className="object-contain p-1 brightness-0 invert"
               />
             </div>
-            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              <strong>{STORE_INFO.name}</strong> adalah platform resmi penyedia layanan isi ulang e-money/e-wallet tercepat di Indonesia serta penyedia akun lisensi digital premium dengan sistem pembayaran QRIS otomatis dan garansi penuh.
+            <p className="text-xs text-blue-100/80 leading-relaxed max-w-sm">
+              <strong>{STORE_INFO.name}</strong> adalah platform resmi penyedia layanan isi ulang e-money/e-wallet tercepat di Indonesia serta lisensi akun digital premium bergaransi dengan sistem pembayaran QRIS otomatis 24 jam.
             </p>
-            <div className="text-xs text-slate-300 space-y-1">
+            <div className="text-xs text-blue-100 space-y-1">
               <p>
                 Owner: <strong>{STORE_INFO.owner}</strong>
               </p>
               <p>
-                Email: <a href={`mailto:${STORE_INFO.email}`} className="text-indigo-400 hover:underline">{STORE_INFO.email}</a>
+                Email: <a href={`mailto:${STORE_INFO.email}`} className="text-sky-300 hover:underline">{STORE_INFO.email}</a>
               </p>
               <p>
-                WhatsApp: <a href={STORE_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-400 hover:underline">{STORE_INFO.whatsapp}</a>
+                WhatsApp CS: <a href={STORE_INFO.whatsappUrl} target="_blank" rel="noopener noreferrer" className="text-emerald-300 hover:underline">{STORE_INFO.whatsapp}</a>
               </p>
             </div>
 
             {/* Social Media Links */}
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex items-center gap-2 pt-1">
               <a
                 href={STORE_INFO.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-xl glass-card text-slate-300 hover:text-pink-400 transition-colors"
+                className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
                 aria-label="Instagram"
               >
                 <svg className="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
@@ -60,7 +60,7 @@ export default function Footer() {
                 href={STORE_INFO.youtubeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-xl glass-card text-slate-300 hover:text-red-500 transition-colors"
+                className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
                 aria-label="YouTube"
               >
                 <svg className="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
@@ -71,7 +71,7 @@ export default function Footer() {
                 href={STORE_INFO.whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2.5 rounded-xl glass-card text-slate-300 hover:text-emerald-400 transition-colors"
+                className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors"
                 aria-label="WhatsApp"
               >
                 <MessageCircle className="w-4 h-4" />
@@ -79,12 +79,12 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 3: Layanan Top-Up (SEO Silo) */}
+          {/* Col 3: Layanan Top-Up */}
           <div className="space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white">
               Top-Up E-Wallet
             </h4>
-            <ul className="space-y-2 text-xs text-slate-400">
+            <ul className="space-y-2 text-xs text-blue-100/80">
               <li>
                 <Link href="/topup-e-wallet" className="hover:text-white transition-colors">
                   Topup E-Wallet Master Hub
@@ -118,7 +118,7 @@ export default function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-white">
               Produk Digital & AI
             </h4>
-            <ul className="space-y-2 text-xs text-slate-400">
+            <ul className="space-y-2 text-xs text-blue-100/80">
               <li>
                 <Link href="/produk/gemini-pro-18months" className="hover:text-white transition-colors">
                   Gemini Pro 18Months (link)
@@ -152,19 +152,19 @@ export default function Footer() {
             <h4 className="text-xs font-bold uppercase tracking-wider text-white">
               Metode Pembayaran
             </h4>
-            <div className="p-3.5 rounded-2xl glass-card space-y-2 text-xs">
-              <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
+            <div className="p-3.5 rounded-xl bg-white/10 space-y-2 text-xs">
+              <div className="flex items-center gap-1.5 text-emerald-300 font-bold">
                 <ShieldCheck className="w-4 h-4" />
                 <span>QRIS All Payment</span>
               </div>
-              <p className="text-[11px] text-slate-400 leading-relaxed">
-                Mendukung semua bank (BCA, Mandiri, BRI, BNI) dan semua dompet digital via QRIS IndoApi & Dinamis.
+              <p className="text-[11px] text-blue-100/80 leading-relaxed">
+                Mendukung semua bank (BCA, Mandiri, BRI, BNI) dan seluruh dompet digital otomatis via QRIS.
               </p>
               <div className="pt-1 flex flex-wrap gap-1">
                 {EMONEY_BRANDS.slice(0, 6).map((b) => (
                   <span
                     key={b.id}
-                    className="text-[10px] px-1.5 py-0.5 rounded bg-white/5 text-slate-300 font-semibold"
+                    className="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-white font-semibold"
                   >
                     {b.name}
                   </span>
@@ -175,13 +175,13 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
+        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-blue-200/70 gap-3">
           <p>
             &copy; {new Date().getFullYear()} <strong>{STORE_INFO.name}</strong> ({STORE_INFO.domain}). All rights reserved.
           </p>
           <div className="flex items-center gap-1">
             <span>Dibuat dengan dedikasi untuk pengguna Indonesia</span>
-            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400" />
           </div>
         </div>
       </div>

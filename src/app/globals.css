@@ -2,112 +2,114 @@
 
 @layer base {
   :root {
-    --bg-dark: #07090e;
-    --card-glass: rgba(18, 24, 38, 0.7);
-    --border-glass: rgba(255, 255, 255, 0.08);
-    --accent-primary: #6366f1;
-    --accent-cyan: #06b6d4;
-    --accent-emerald: #10b981;
+    --brand-navy: #35508d;
+    --brand-navy-dark: #273b68;
+    --brand-navy-deep: #1e2e50;
+    --brand-blue: #0066cc;
+    --brand-blue-hover: #0052a3;
+    --brand-blue-light: #ebf5ff;
+    --canvas-bg: #f4f6f9;
+    --card-bg: #ffffff;
+    --border-light: #e2e8f0;
   }
 }
 
 body {
-  background-color: #07090e;
-  color: #f1f5f9;
+  background-color: #f4f6f9;
+  color: #1e293b;
   font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
   overflow-x: hidden;
 }
 
-/* Glassmorphism Components */
-.glass-panel {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+/* HotelMurah Clean UI Tokens */
+.clean-card {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.glass-card {
-  background: rgba(30, 41, 59, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+.clean-card:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 2px 6px -2px rgba(0, 0, 0, 0.04);
 }
 
-.glass-card:hover {
-  background: rgba(30, 41, 59, 0.7);
-  border-color: rgba(99, 102, 241, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px -8px rgba(99, 102, 241, 0.25);
+.clean-card-selected {
+  background-color: #f0f7ff !important;
+  border-color: #0066cc !important;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.25), 0 4px 12px -2px rgba(0, 102, 204, 0.15) !important;
 }
 
-.glass-card-active {
-  background: rgba(99, 102, 241, 0.15) !important;
-  border-color: #6366f1 !important;
-  box-shadow: 0 0 20px rgba(99, 102, 241, 0.35) !important;
-}
-
-.glass-input {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #f8fafc;
+.clean-input {
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
   transition: all 0.2s ease;
 }
 
-.glass-input:focus {
-  background: rgba(15, 23, 42, 0.85);
-  border-color: #6366f1;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+.clean-input:focus {
   outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.15);
 }
 
-.glass-pill {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.clean-btn-navy {
+  background-color: #35508d;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
 }
 
-/* Ambient Radial Mesh Background */
-.mesh-gradient-bg {
-  background-color: #07090e;
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.12) 0px, transparent 50%),
-    radial-gradient(at 50% 50%, rgba(139, 92, 246, 0.08) 0px, transparent 60%),
-    radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
-  background-attachment: fixed;
+.clean-btn-navy:hover {
+  background-color: #273b68;
 }
 
-/* Neon Text Gradient */
-.text-gradient-neon {
-  background: linear-gradient(135deg, #a5b4fc 0%, #38bdf8 50%, #4ade80 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.clean-btn-blue {
+  background-color: #0066cc;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
 }
 
-.text-gradient-purple {
-  background: linear-gradient(135deg, #ffffff 0%, #c084fc 60%, #818cf8 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.clean-btn-blue:hover {
+  background-color: #0052a3;
+}
+
+/* HotelMurah Step Badges */
+.step-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 9999px;
+  background-color: #35508d;
+  color: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 800;
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #07090e;
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #cbd5e1;
   border-radius: 9999px;
-  border: 2px solid #07090e;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94a3b8;
 }

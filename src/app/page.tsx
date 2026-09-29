@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import PromoBanner from "@/components/PromoBanner";
 import CategorySilo from "@/components/CategorySilo";
@@ -12,6 +12,7 @@ import CheckoutModal from "@/components/CheckoutModal";
 import PromoPopup from "@/components/PromoPopup";
 import OrderTrackerModal from "@/components/OrderTrackerModal";
 import AdminDashboardModal from "@/components/AdminDashboardModal";
+import AuthModal, { AuthUser } from "@/components/AuthModal";
 import { EMoneyBrand, NominalItem, DigitalProduct } from "@/types";
 
 export default function HomePage() {
@@ -19,6 +20,33 @@ export default function HomePage() {
   const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
   const [trackerModalOpen, setTrackerModalOpen] = useState(false);
   const [adminModalOpen, setAdminModalOpen] = useState(false);
+
+  // Authentication states
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [authDefaultTab, setAuthDefaultTab] = useState<"login" | "register">("login");
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
+
+  // Load auth state from localStorage on client mount
+  useEffect(() => {
+    try {
+      const savedUser = localStorage.getItem("arifinstore_auth_user");
+      if (savedUser) {
+        setCurrentUser(JSON.parse(savedUser));
+      }
+    } catch (e) {
+      console.error("Error reading auth state", e);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("arifinstore_auth_user");
+    setCurrentUser(null);
+  };
+
+  const handleOpenAuth = (tab: "login" | "register" = "login") => {
+    setAuthDefaultTab(tab);
+    setAuthModalOpen(true);
+  };
 
   const [checkoutOrder, setCheckoutOrder] = useState<{
     type: "e-money" | "digital";
@@ -68,17 +96,20 @@ export default function HomePage() {
   };
 
   return (
-    <main className="min-h-screen flex flex-col">
-      {/* 1. Navbar */}
+    <main className="min-h-screen flex flex-col bg-[#f4f6f9]">
+      {/* 1. Navbar with HotelMurah Navy Header & Auth state */}
       <Navbar
         onOpenTracker={() => setTrackerModalOpen(true)}
         onOpenAdmin={() => setAdminModalOpen(true)}
+        onOpenAuth={handleOpenAuth}
+        currentUser={currentUser}
+        onLogout={handleLogout}
       />
 
       {/* 2. Hero Promotional Banner Carousel */}
       <PromoBanner />
 
-      {/* 3. Category Silo Navigation (HotelMurah Style) */}
+      {/* 3. Category Silo Navigation (HotelMurah Clean Style) */}
       <CategorySilo onSelectBrand={handleBrandSelectFromSilo} />
 
       {/* 4. E-Money Top-Up Section (19 Fixed Denominations + Sekalipay Open Denom) */}
@@ -97,6 +128,15 @@ export default function HomePage() {
       <Footer />
 
       {/* Modals & Overlays */}
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        defaultTab={authDefaultTab}
+        onLoginSuccess={(user) => {
+          setCurrentUser(user);
+        }}
+      />
+
       <CheckoutModal
         isOpen={checkoutModalOpen}
         onClose={() => setCheckoutModalOpen(false)}

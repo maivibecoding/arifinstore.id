@@ -21,7 +21,7 @@ export default function CategorySilo({
       icon: "/assets/logo200x200.png",
       href: "/topup-e-wallet",
       badge: "Master Hub",
-      color: "from-blue-500/20 to-indigo-500/20",
+      badgeColor: "bg-blue-100 text-blue-800 border-blue-200",
     },
     {
       id: "dana",
@@ -29,7 +29,7 @@ export default function CategorySilo({
       icon: "/assets/dana-product.png",
       action: () => onSelectBrand?.("dana"),
       badge: "Populer",
-      color: "from-sky-500/20 to-blue-500/20",
+      badgeColor: "bg-sky-100 text-sky-800 border-sky-200",
     },
     {
       id: "gopay",
@@ -37,47 +37,43 @@ export default function CategorySilo({
       icon: "/assets/gopay-product.png",
       action: () => onSelectBrand?.("gopay"),
       badge: "Instan",
-      color: "from-emerald-500/20 to-teal-500/20",
+      badgeColor: "bg-emerald-100 text-emerald-800 border-emerald-200",
     },
     {
       id: "shopeepay",
-      title: "Topup ShopeePay",
+      title: "ShopeePay",
       icon: "/assets/shopeepay-product.png",
       action: () => onSelectBrand?.("shopeepay"),
-      badge: "Promo",
-      color: "from-orange-500/20 to-red-500/20",
+      badge: "Hemat",
+      badgeColor: "bg-orange-100 text-orange-800 border-orange-200",
     },
     {
       id: "ovo",
       title: "Topup OVO",
       icon: "/assets/ovo-product.png",
       action: () => onSelectBrand?.("ovo"),
-      color: "from-purple-500/20 to-indigo-500/20",
     },
     {
       id: "linkaja",
-      title: "Topup LinkAja",
+      title: "LinkAja",
       icon: "/assets/linkaja-product.png",
       action: () => onSelectBrand?.("linkaja"),
-      color: "from-red-500/20 to-rose-500/20",
     },
     {
       id: "gemini-pro",
-      title: "Gemini Pro 18Months",
+      title: "Gemini Pro 18M",
       icon: "/assets/logo200x200.png",
       href: "/produk/gemini-pro-18months",
-      badge: "AI 18 Bulan",
-      color: "from-purple-600/30 to-pink-600/20",
-      isSpecial: true,
+      badge: "AI Pro",
+      badgeColor: "bg-purple-100 text-purple-800 border-purple-200",
     },
     {
       id: "duolingo-super",
-      title: "Duolingo Super 12M",
+      title: "Duolingo Super",
       icon: "/assets/logo200x200.png",
       href: "/produk/duolingo-super-12m",
       badge: "1 Tahun",
-      color: "from-green-600/30 to-emerald-600/20",
-      isSpecial: true,
+      badgeColor: "bg-green-100 text-green-800 border-green-200",
     },
     {
       id: "notion-plus",
@@ -85,65 +81,65 @@ export default function CategorySilo({
       icon: "/assets/logo200x200.png",
       href: "/produk/notion-plus",
       badge: "Workspace",
-      color: "from-zinc-600/30 to-slate-600/20",
-      isSpecial: true,
+      badgeColor: "bg-slate-200 text-slate-800 border-slate-300",
     },
     {
       id: "isaku",
       title: "Topup i.saku",
       icon: "/assets/isaku-product.png",
       action: () => onSelectBrand?.("isaku"),
-      color: "from-blue-500/20 to-cyan-500/20",
     },
     {
       id: "doku",
       title: "Topup DOKU",
       icon: "/assets/doku-product.png",
       action: () => onSelectBrand?.("doku"),
-      color: "from-red-500/20 to-amber-500/20",
     },
     {
       id: "astrapay",
-      title: "Topup AstraPay",
+      title: "AstraPay",
       icon: "/assets/astrapay-product.png",
       action: () => onSelectBrand?.("astrapay"),
-      color: "from-blue-600/20 to-indigo-600/20",
     },
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      <div className="flex items-center justify-between mb-4">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="flex items-center justify-between mb-3">
         <div>
-          <h2 className="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-amber-400" />
-            Layanan Cepat (HotelMurah Style)
+          <h2 className="text-base sm:text-lg font-bold text-slate-800 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#0066cc]" />
+            Layanan Utama & Kategori Cepat
           </h2>
-          <p className="text-xs text-slate-400">
-            Akses langsung menu top up e-wallet dan aktivasi produk digital terpopuler
+          <p className="text-xs text-slate-500">
+            Akses langsung isi saldo e-wallet dan aktivasi akun digital terlaris
           </p>
         </div>
         <Link
           href="/topup-e-wallet"
-          className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
+          className="text-xs font-bold text-[#0066cc] hover:underline flex items-center gap-1"
         >
           Lihat Semua <ArrowUpRight className="w-3.5 h-3.5" />
         </Link>
       </div>
 
-      {/* Grid of Icons */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+      {/* Grid of Clean HotelMurah Icon Cards */}
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-6 gap-2.5 sm:gap-3">
         {quickLinks.map((item) => {
           const content = (
             <div
-              className={`relative p-3.5 rounded-2xl glass-card flex flex-col items-center justify-center text-center gap-2.5 hover:scale-[1.03] transition-all cursor-pointer group bg-gradient-to-b ${item.color}`}
+              className="relative p-3 rounded-2xl bg-white border border-slate-200/90 shadow-2xs hover:shadow-md hover:border-[#0066cc] flex flex-col items-center justify-center text-center gap-2 transition-all cursor-pointer group"
             >
               {item.badge && (
-                <span className="absolute top-2 right-2 px-1.5 py-0.5 rounded text-[9px] font-bold text-white bg-indigo-600/60 border border-indigo-400/30">
+                <span
+                  className={`absolute -top-1.5 -right-1 px-1.5 py-0.2 rounded-md text-[9px] font-extrabold border ${
+                    item.badgeColor || "bg-blue-100 text-blue-800 border-blue-200"
+                  }`}
+                >
                   {item.badge}
                 </span>
               )}
-              <div className="relative w-12 h-12 rounded-xl overflow-hidden p-1.5 bg-black/20 backdrop-blur-sm border border-white/10 group-hover:border-indigo-400/50 transition-colors">
+              <div className="relative w-11 h-11 rounded-xl p-1 bg-slate-50 border border-slate-100 group-hover:scale-105 transition-transform flex items-center justify-center">
                 <Image
                   src={item.icon}
                   alt={item.title}
@@ -151,7 +147,7 @@ export default function CategorySilo({
                   className="object-contain p-1"
                 />
               </div>
-              <span className="text-xs font-bold text-slate-200 group-hover:text-white line-clamp-1">
+              <span className="text-[11px] sm:text-xs font-bold text-slate-700 group-hover:text-[#0066cc] line-clamp-1 transition-colors">
                 {item.title}
               </span>
             </div>
