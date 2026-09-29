@@ -175,7 +175,6 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
           <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
             <div className="flex items-center justify-between">
               <label className="text-sm font-bold text-slate-800 flex items-center gap-2">
-                <span className="step-badge">1</span>
                 Masukkan Nomor HP Akun {brand.name}
               </label>
               <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
@@ -218,7 +217,6 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
           <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
               <h2 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
-                <span className="step-badge">2</span>
                 Pilih Nominal Saldo {brand.name}
               </h2>
               <span className="text-xs text-slate-500">

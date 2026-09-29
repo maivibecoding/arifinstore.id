@@ -103,7 +103,6 @@ export default function EMoneyTopupSection({
         <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
-              <span className="step-badge">1</span>
               Pilih Layanan E-Money
             </h3>
             <span className="text-xs font-medium text-slate-500">8 E-Wallet Tersedia</span>
@@ -154,7 +153,6 @@ export default function EMoneyTopupSection({
         <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
-              <span className="step-badge">2</span>
               Masukkan Nomor Akun {selectedBrand.name}
             </h3>
             <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
@@ -199,7 +197,6 @@ export default function EMoneyTopupSection({
         <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
             <h3 className="text-sm sm:text-base font-bold text-slate-800 flex items-center gap-2">
-              <span className="step-badge">3</span>
               Pilih Nominal Top-Up (19 Pilihan Tetap)
             </h3>
             <p className="text-xs text-slate-500">
