@@ -37,7 +37,7 @@ export default function EMoneyTopupSection({
   const [selectedNominal, setSelectedNominal] = useState<NominalItem | null>(null);
   const [accountName, setAccountName] = useState<string | null>(null);
   const [isValidating, setIsValidating] = useState(false);
-  const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "UNCONFIGURED">("IDLE");
+  const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "IP_NOT_WHITELISTED" | "UNCONFIGURED">("IDLE");
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
   // Sync if external selectedBrandId changes
@@ -69,6 +69,9 @@ export default function EMoneyTopupSection({
           if (data.success && data.accountName) {
             setAccountName(data.accountName);
             setValidationStatus("SUCCESS");
+          } else if (data.error === "IP_NOT_WHITELISTED") {
+            setValidationStatus("IP_NOT_WHITELISTED");
+            setValidationMessage(data.message);
           } else if (data.error === "ACCOUNT_NOT_FOUND") {
             setValidationStatus("NOT_FOUND");
             setValidationMessage(data.message || `Nomor ini tidak terdaftar di ${selectedBrand.name}.`);
@@ -226,6 +229,15 @@ export default function EMoneyTopupSection({
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>
                   Nama Akun: <strong>{accountName}</strong> (Terverifikasi)
+                </span>
+              </div>
+            )}
+
+            {!isValidating && validationStatus === "IP_NOT_WHITELISTED" && (
+              <div className="mt-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2 text-xs text-amber-800">
+                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>
+                  {validationMessage || "IP server belum di-whitelist di Sekalipay. Tambahkan IP server ke menu Settings/API Sekalipay."}
                 </span>
               </div>
             )}

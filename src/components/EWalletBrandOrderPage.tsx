@@ -38,7 +38,7 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
   const [selectedNominal, setSelectedNominal] = useState<NominalItem | null>(null);
   const [accountName, setAccountName] = useState<string | null>(null);
   const [isValidating, setIsValidating] = useState(false);
-  const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "UNCONFIGURED">("IDLE");
+  const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "IP_NOT_WHITELISTED" | "UNCONFIGURED">("IDLE");
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
   // Modals
@@ -85,6 +85,9 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
           if (data.success && data.accountName) {
             setAccountName(data.accountName);
             setValidationStatus("SUCCESS");
+          } else if (data.error === "IP_NOT_WHITELISTED") {
+            setValidationStatus("IP_NOT_WHITELISTED");
+            setValidationMessage(data.message);
           } else if (data.error === "ACCOUNT_NOT_FOUND") {
             setValidationStatus("NOT_FOUND");
             setValidationMessage(data.message || `Nomor ini tidak terdaftar di ${brand.name}.`);
@@ -249,6 +252,15 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>
                   Pemilik Akun Terdaftar: <strong>{accountName}</strong> (Terverifikasi)
+                </span>
+              </div>
+            )}
+
+            {!isValidating && validationStatus === "IP_NOT_WHITELISTED" && (
+              <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2 text-xs text-amber-800 font-medium">
+                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>
+                  {validationMessage || "IP server belum di-whitelist di Sekalipay. Tambahkan IP server ke menu Settings/API Sekalipay."}
                 </span>
               </div>
             )}

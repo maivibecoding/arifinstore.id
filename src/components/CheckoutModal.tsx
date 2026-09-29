@@ -55,31 +55,43 @@ export default function CheckoutModal({
       setIsPaid(false);
       setIsProcessing(false);
       setTimeLeft(900);
+      setQrImageDataUrl("");
 
       const base = orderData.basePrice;
 
-      // Smart Split QRIS logic
-      if (base > 400000) {
-        // TIER 2: > 400rb memakai QRIS Statis to Dinamis dengan Anti-Collision (+1, +2, dst.)
-        setGatewayType("DYNAMIC_QRIS");
-        const { finalAmount: calcFinal, uniqueCode: code } = qrisSequencer.getUniqueNominal(base, inv);
-        setFinalAmount(calcFinal);
-        setUniqueCode(code);
-
-        const dynQris = convertStaticToDynamicQRIS(undefined, calcFinal);
-        setQrisString(dynQris);
-        QRCode.toDataURL(dynQris, { width: 350, margin: 2 }).then(setQrImageDataUrl);
-      } else {
-        // TIER 1: <= 400rb memakai IndoApi Otomatis
-        setGatewayType("INDOAPI");
-        setFinalAmount(base);
-        setUniqueCode(0);
-
-        // Standard IndoApi dynamic string simulation
-        const indoQris = convertStaticToDynamicQRIS(undefined, base);
-        setQrisString(indoQris);
-        QRCode.toDataURL(indoQris, { width: 350, margin: 2 }).then(setQrImageDataUrl);
-      }
+      // Call backend payment creation API (IndoApi / Dynamic QRIS Anti-Collision)
+      fetch("/api/create-payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          amount: base,
+          invoice: inv,
+          customerName: orderData.accountHolderName || "Pelanggan Arifin Store",
+          title: orderData.title,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setGatewayType(data.gateway);
+            setFinalAmount(data.finalAmount);
+            setUniqueCode(data.uniqueCode || 0);
+            setQrisString(data.qrisString);
+            if (data.qrImage) {
+              setQrImageDataUrl(data.qrImage);
+            } else if (data.qrisString) {
+              QRCode.toDataURL(data.qrisString, { width: 350, margin: 2 }).then(setQrImageDataUrl);
+            }
+          }
+        })
+        .catch((err) => {
+          console.error("Payment init error:", err);
+          const dynQris = convertStaticToDynamicQRIS(undefined, base);
+          setGatewayType(base > 400000 ? "DYNAMIC_QRIS" : "INDOAPI");
+          setFinalAmount(base);
+          setQrisString(dynQris);
+          QRCode.toDataURL(dynQris, { width: 350, margin: 2 }).then(setQrImageDataUrl);
+        });
     }
   }, [isOpen, orderData]);
 

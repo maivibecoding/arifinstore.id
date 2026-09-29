@@ -83,6 +83,26 @@ export async function POST(req: Request) {
       });
     }
 
+    if (resJson?.message && String(resJson.message).includes("INVALID_IP")) {
+      const detectedIp = String(resJson.message).replace("INVALID_IP=", "").trim();
+      return NextResponse.json({
+        success: false,
+        error: "IP_NOT_WHITELISTED",
+        message: `IP belum di-whitelist di Dashboard Sekalipay: ${detectedIp}`,
+        detectedIp,
+        phoneNumber: cleanNumber,
+      });
+    }
+
+    if (resJson?.message === "INVALID_API_KEY") {
+      return NextResponse.json({
+        success: false,
+        error: "INVALID_API_KEY",
+        message: "API Key Sekalipay tidak valid.",
+        phoneNumber: cleanNumber,
+      });
+    }
+
     return NextResponse.json({
       success: false,
       error: "ACCOUNT_NOT_FOUND",
