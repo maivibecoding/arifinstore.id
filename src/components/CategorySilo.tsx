@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Sparkles, ArrowRight, ShieldCheck, Zap } from "lucide-react";
+import { Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
 import { EMONEY_BRANDS } from "@/lib/constants";
 
 export default function CategorySilo() {
@@ -40,8 +40,7 @@ export default function CategorySilo() {
       <div className="bg-white p-5 sm:p-7 rounded-2xl border border-slate-200 shadow-2xs space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pb-3 border-b border-slate-100">
           <div>
-            <h2 className="text-base sm:text-lg font-black text-slate-900 flex items-center gap-2">
-              <Zap className="w-5 h-5 text-amber-500" />
+            <h2 className="text-base sm:text-lg font-black text-slate-900">
               Pilih Layanan Top Up E-Wallet
             </h2>
             <p className="text-xs text-slate-500">

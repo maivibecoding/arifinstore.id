@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { EMONEY_BRANDS, FIXED_NOMINALS, STORE_INFO } from "@/lib/constants";
 import { formatRupiah } from "@/lib/utils";
-import { ShieldCheck, Zap, ArrowRight, CheckCircle2, HelpCircle } from "lucide-react";
+import { ShieldCheck, ArrowRight, CheckCircle2, HelpCircle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Topup E-Wallet Murah, Lengkap & Tercepat 24 Jam",
@@ -48,8 +48,7 @@ export default function TopupEWalletPage() {
 
         {/* E-Wallet Grid Directory (HotelMurah Clean Style) */}
         <div className="space-y-3">
-          <h2 className="text-lg font-bold text-slate-900 flex items-center gap-2">
-            <Zap className="w-5 h-5 text-amber-500" />
+          <h2 className="text-lg font-bold text-slate-900">
             Daftar Layanan E-Wallet Tersedia
           </h2>
 
