@@ -2,7 +2,7 @@ import { EMoneyBrand, NominalItem, DigitalProduct, BlogPost } from "@/types";
 
 export const STORE_INFO = {
   name: "Arifin Store",
-  domain: "arifinstore.id",
+  domain: "arifinstore.web.id",
   owner: "Mokhammad Arifin Ilham",
   whatsapp: "083183787697",
   whatsappUrl: "https://wa.me/6283183787697",

@@ -28,11 +28,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Mokhammad Arifin Ilham" }],
   creator: "Mokhammad Arifin Ilham",
-  metadataBase: new URL("https://arifinstore.id"),
+  metadataBase: new URL("https://www.arifinstore.web.id"),
   openGraph: {
     type: "website",
     locale: "id_ID",
-    url: "https://arifinstore.id",
+    url: "https://www.arifinstore.web.id",
     siteName: "Arifin Store",
     title: "Arifin Store - Top Up E-Money & Akun Digital Premium 24 Jam",
     description:
