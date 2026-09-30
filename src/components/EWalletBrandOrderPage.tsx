@@ -37,8 +37,10 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedNominal, setSelectedNominal] = useState<NominalItem | null>(null);
   const [accountName, setAccountName] = useState<string | null>(null);
+  const [detectedOperator, setDetectedOperator] = useState<string>("");
+  const [detectedIp, setDetectedIp] = useState<string>("");
   const [isValidating, setIsValidating] = useState(false);
-  const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "IP_NOT_WHITELISTED" | "UNCONFIGURED">("IDLE");
+  const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "IP_NOT_WHITELISTED" | "INVALID_PHONE" | "UNCONFIGURED">("IDLE");
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
   // Modals
@@ -85,14 +87,22 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
           if (data.success && data.accountName) {
             setAccountName(data.accountName);
             setValidationStatus("SUCCESS");
-          } else if (data.error === "IP_NOT_WHITELISTED") {
+            setDetectedOperator(data.operator || "");
+          } else if (data.status === "IP_NOT_WHITELISTED" || data.error === "IP_NOT_WHITELISTED") {
             setValidationStatus("IP_NOT_WHITELISTED");
+            setDetectedOperator(data.operator || "");
             setValidationMessage(data.message);
+            setDetectedIp(data.detectedIp || "");
           } else if (data.error === "ACCOUNT_NOT_FOUND") {
             setValidationStatus("NOT_FOUND");
+            setDetectedOperator(data.operator || "");
             setValidationMessage(data.message || `Nomor ini tidak terdaftar di ${brand.name}.`);
+          } else if (data.error === "INVALID_PHONE") {
+            setValidationStatus("INVALID_PHONE");
+            setValidationMessage(data.message);
           } else {
             setValidationStatus("UNCONFIGURED");
+            setDetectedOperator(data.operator || "");
             setValidationMessage(null);
           }
         } catch (err) {
@@ -239,7 +249,7 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
             {isValidating && (
               <div className="flex items-center gap-2 text-xs text-[#0066cc] animate-pulse pt-1">
                 <span className="w-3.5 h-3.5 border-2 border-[#0066cc] border-t-transparent rounded-full animate-spin shrink-0" />
-                <span>Memverifikasi akun {brand.name}...</span>
+                <span>Memeriksa status akun {brand.name}...</span>
               </div>
             )}
 
@@ -247,17 +257,20 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
               <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2 text-xs text-emerald-800 font-medium">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>
-                  Pemilik Akun Terdaftar: <strong>{accountName}</strong> (Terverifikasi)
+                  Pemilik Akun Terdaftar: <strong className="text-emerald-950 font-bold">{accountName}</strong> ({detectedOperator || brand.name})
                 </span>
               </div>
             )}
 
             {!isValidating && validationStatus === "IP_NOT_WHITELISTED" && (
-              <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2 text-xs text-amber-800 font-medium">
-                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>
-                  {validationMessage || "IP server belum di-whitelist di Sekalipay. Tambahkan IP server ke menu Settings/API Sekalipay."}
-                </span>
+              <div className="p-3.5 rounded-xl bg-blue-50/80 border border-blue-200 flex flex-col gap-1.5 text-xs text-slate-700">
+                <div className="flex items-center gap-2 text-emerald-700 font-bold">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Nomor {detectedOperator || "Seluler"} Valid ({phoneNumber.replace(/[^0-9]/g, "").length} digit)</span>
+                </div>
+                <p className="text-[11px] text-slate-600 leading-relaxed">
+                  Untuk memunculkan nama pemilik otomatis di laptop, masukkan IP ini ke <strong>Dashboard Sekalipay &rarr; IP Whitelist</strong>: <code className="bg-white px-2 py-0.5 rounded border border-slate-300 font-mono text-[#0066cc] font-bold select-all">{detectedIp || "2404:c0:ab07:3dfb:71d6:ca72:9a24:1df3"}</code>
+                </p>
               </div>
             )}
 
@@ -270,11 +283,18 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
               </div>
             )}
 
+            {!isValidating && validationStatus === "INVALID_PHONE" && (
+              <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2 text-xs text-amber-800 font-medium">
+                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>{validationMessage || "Format nomor handphone tidak valid. Gunakan awalan 08 (10-13 digit)."}</span>
+              </div>
+            )}
+
             {!isValidating && validationStatus === "UNCONFIGURED" && phoneNumber.replace(/[^0-9]/g, "").length >= 10 && (
               <div className="p-3 rounded-xl bg-blue-50/70 border border-blue-200 flex items-center gap-2 text-xs text-slate-700 font-medium">
                 <CheckCircle2 className="w-4 h-4 text-[#0066cc] shrink-0" />
                 <span>
-                  Nomor Tujuan: <strong className="font-mono text-slate-900">{phoneNumber}</strong>. Pastikan nomor handphone aktif dan sesuai akun {brand.name}.
+                  Nomor Tujuan {brand.name}: <strong className="font-mono text-slate-900">{phoneNumber}</strong> ({detectedOperator || "Seluler"})
                 </span>
               </div>
             )}
@@ -294,22 +314,27 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
                     key={nom.amount}
                     type="button"
                     onClick={() => setSelectedNominal(nom)}
-                    className={`p-3 rounded-xl flex flex-col text-left border transition-all cursor-pointer relative overflow-hidden ${
+                    className={`p-3 sm:p-3.5 rounded-xl flex flex-col text-left border-2 transition-all cursor-pointer relative overflow-hidden select-none ${
                       isSelected
-                        ? "clean-card-selected scale-[1.02]"
+                        ? "bg-blue-50/90 border-[#0066cc] ring-2 ring-[#0066cc]/25 shadow-md scale-[1.02]"
                         : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/70"
                     }`}
                   >
-                    {nom.popular && (
+                    {isSelected && (
+                      <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#0066cc] text-white flex items-center justify-center shadow-xs">
+                        <Check className="w-2.5 h-2.5 stroke-[3]" />
+                      </div>
+                    )}
+                    {nom.popular && !isSelected && (
                       <span className="absolute top-0 right-0 bg-red-600 text-[9px] font-bold text-white px-1.5 py-0.2 rounded-bl-md">
                         Laris
                       </span>
                     )}
-                    <span className="text-xs sm:text-sm font-black text-slate-900">
+                    <span className={`text-xs sm:text-sm font-black ${isSelected ? "text-[#0066cc]" : "text-slate-900"}`}>
                       {brand.name.toUpperCase()} {nom.label}
                     </span>
                     <div className="mt-1.5 flex items-baseline justify-between w-full">
-                      <span className="text-xs font-bold text-[#0066cc]">
+                      <span className={`text-xs font-bold ${isSelected ? "text-[#0066cc]" : "text-[#0066cc]"}`}>
                         {formatRupiah(nom.price)}
                       </span>
                     </div>

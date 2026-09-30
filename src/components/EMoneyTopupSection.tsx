@@ -276,18 +276,23 @@ export default function EMoneyTopupSection({
                   key={nominal.amount}
                   type="button"
                   onClick={() => setSelectedNominal(nominal)}
-                  className={`p-3 rounded-xl flex flex-col text-left border transition-all cursor-pointer relative overflow-hidden ${
+                  className={`p-3 rounded-xl flex flex-col text-left border-2 transition-all cursor-pointer relative overflow-hidden select-none ${
                     isSelected
-                      ? "clean-card-selected scale-[1.02]"
+                      ? "bg-blue-50/90 border-[#0066cc] ring-2 ring-[#0066cc]/25 shadow-md scale-[1.02]"
                       : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/70"
                   }`}
                 >
-                  {nominal.popular && (
+                  {isSelected && (
+                    <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-[#0066cc] text-white flex items-center justify-center shadow-xs">
+                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    </div>
+                  )}
+                  {nominal.popular && !isSelected && (
                     <span className="absolute top-0 right-0 bg-red-600 text-[9px] font-bold text-white px-1.5 py-0.2 rounded-bl-md">
                       Laris
                     </span>
                   )}
-                  <span className="text-xs sm:text-sm font-extrabold text-slate-900">
+                  <span className={`text-xs sm:text-sm font-extrabold ${isSelected ? "text-[#0066cc]" : "text-slate-900"}`}>
                     {selectedBrand.name.toUpperCase()} {nominal.label}
                   </span>
                   <div className="mt-1.5 flex items-baseline justify-between w-full">
