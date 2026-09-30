@@ -217,14 +217,10 @@ export default function EWalletBrandOrderPage({ brandId }: EWalletBrandOrderPage
         <form onSubmit={handleCheckout} className="space-y-5">
           {/* Step 1: Input Nomor Akun */}
           <div className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
-            <div className="flex items-center justify-between">
-              <label className="text-sm font-bold text-slate-800 flex items-center gap-2">
+            <div>
+              <label className="text-sm font-bold text-slate-800">
                 Masukkan Nomor HP Akun {brand.name}
               </label>
-              <span className="text-xs text-emerald-600 font-semibold flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                Cek Akun Otomatis
-              </span>
             </div>
 
             <div className="relative">
