@@ -36,8 +36,10 @@ export default function EMoneyTopupSection({
   const [phoneNumber, setPhoneNumber] = useState("");
   const [selectedNominal, setSelectedNominal] = useState<NominalItem | null>(null);
   const [accountName, setAccountName] = useState<string | null>(null);
+  const [detectedOperator, setDetectedOperator] = useState<string>("");
+  const [detectedIp, setDetectedIp] = useState<string>("");
   const [isValidating, setIsValidating] = useState(false);
-  const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "IP_NOT_WHITELISTED" | "UNCONFIGURED">("IDLE");
+  const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "IP_NOT_WHITELISTED" | "INVALID_PHONE" | "UNCONFIGURED">("IDLE");
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
   // Sync if external selectedBrandId changes
@@ -69,14 +71,22 @@ export default function EMoneyTopupSection({
           if (data.success && data.accountName) {
             setAccountName(data.accountName);
             setValidationStatus("SUCCESS");
-          } else if (data.error === "IP_NOT_WHITELISTED") {
+            setDetectedOperator(data.operator || "");
+          } else if (data.status === "IP_NOT_WHITELISTED" || data.error === "IP_NOT_WHITELISTED") {
             setValidationStatus("IP_NOT_WHITELISTED");
+            setDetectedOperator(data.operator || "");
             setValidationMessage(data.message);
+            setDetectedIp(data.detectedIp || "");
           } else if (data.error === "ACCOUNT_NOT_FOUND") {
             setValidationStatus("NOT_FOUND");
+            setDetectedOperator(data.operator || "");
             setValidationMessage(data.message || `Nomor ini tidak terdaftar di ${selectedBrand.name}.`);
+          } else if (data.error === "INVALID_PHONE") {
+            setValidationStatus("INVALID_PHONE");
+            setValidationMessage(data.message);
           } else {
             setValidationStatus("UNCONFIGURED");
+            setDetectedOperator(data.operator || "");
             setValidationMessage(null);
           }
         } catch (err) {
@@ -234,11 +244,14 @@ export default function EMoneyTopupSection({
             )}
 
             {!isValidating && validationStatus === "IP_NOT_WHITELISTED" && (
-              <div className="mt-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2 text-xs text-amber-800">
-                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>
-                  {validationMessage || "IP server belum di-whitelist di Sekalipay. Tambahkan IP server ke menu Settings/API Sekalipay."}
-                </span>
+              <div className="mt-2.5 p-3.5 rounded-xl bg-blue-50/80 border border-blue-200 flex flex-col gap-1.5 text-xs text-slate-700">
+                <div className="flex items-center gap-2 text-emerald-700 font-bold">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>Nomor {detectedOperator || "Seluler"} Valid ({phoneNumber.replace(/[^0-9]/g, "").length} digit)</span>
+                </div>
+                <p className="text-[11px] text-slate-600 leading-relaxed">
+                  Untuk memunculkan nama pemilik otomatis di laptop, masukkan IP ini ke <strong>Dashboard Sekalipay &rarr; IP Whitelist</strong>: <code className="bg-white px-2 py-0.5 rounded border border-slate-300 font-mono text-[#0066cc] font-bold select-all">{detectedIp || "2404:c0:ab07:3dfb:71d6:ca72:9a24:1df3"}</code>
+                </p>
               </div>
             )}
 
@@ -251,11 +264,18 @@ export default function EMoneyTopupSection({
               </div>
             )}
 
+            {!isValidating && validationStatus === "INVALID_PHONE" && (
+              <div className="mt-2.5 p-3 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2 text-xs text-amber-800">
+                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>{validationMessage || "Format nomor handphone tidak valid. Gunakan awalan 08 (10-13 digit)."}</span>
+              </div>
+            )}
+
             {!isValidating && validationStatus === "UNCONFIGURED" && phoneNumber.replace(/[^0-9]/g, "").length >= 10 && (
               <div className="mt-2.5 p-3 rounded-xl bg-blue-50/70 border border-blue-200 flex items-center gap-2 text-xs text-slate-700">
                 <CheckCircle2 className="w-4 h-4 text-[#0066cc] shrink-0" />
                 <span>
-                  Nomor Tujuan: <strong className="font-mono text-slate-900">{phoneNumber}</strong>. Pastikan nomor handphone aktif dan sesuai akun {selectedBrand.name}.
+                  Nomor Tujuan {selectedBrand.name}: <strong className="font-mono text-slate-900">{phoneNumber}</strong> ({detectedOperator || "Seluler"})
                 </span>
               </div>
             )}
