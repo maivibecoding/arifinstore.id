@@ -274,7 +274,7 @@ export default function EMoneyTopupSection({
               <div className="mt-2.5 p-3.5 rounded-xl bg-blue-50/80 border border-blue-200 flex flex-col gap-1.5 text-xs text-slate-700">
                 <div className="flex items-center gap-2 text-emerald-700 font-bold">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Nomor {detectedOperator || "Seluler"} Valid ({phoneNumber.replace(/[^0-9]/g, "").length} digit)</span>
+                  <span>Nomor Valid ({phoneNumber.replace(/[^0-9]/g, "").length} digit)</span>
                 </div>
                 <p className="text-[11px] text-slate-600 leading-relaxed">
                   Untuk memunculkan nama pemilik otomatis di laptop, masukkan IP ini ke <strong>Dashboard Sekalipay &rarr; IP Whitelist</strong>: <code className="bg-white px-2 py-0.5 rounded border border-slate-300 font-mono text-[#0066cc] font-bold select-all">{detectedIp || "2404:c0:ab07:3dfb:71d6:ca72:9a24:1df3"}</code>
@@ -302,7 +302,7 @@ export default function EMoneyTopupSection({
               <div className="mt-2.5 p-3 rounded-xl bg-blue-50/70 border border-blue-200 flex items-center gap-2 text-xs text-slate-700">
                 <CheckCircle2 className="w-4 h-4 text-[#0066cc] shrink-0" />
                 <span>
-                  Nomor Tujuan {selectedBrand.name}: <strong className="font-mono text-slate-900">{phoneNumber}</strong> ({detectedOperator || "Seluler"})
+                  Nomor Tujuan {selectedBrand.name}: <strong className="font-mono text-slate-900">{phoneNumber}</strong>
                 </span>
               </div>
             )}
