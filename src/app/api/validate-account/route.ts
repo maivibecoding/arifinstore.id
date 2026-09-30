@@ -39,44 +39,39 @@ export async function POST(req: Request) {
     const operator = detectOperator(cleanNumber);
     const apiKey = process.env.SEKALIPAY_API_KEY || "wa1GRp7sfVUrySqDBv8QORQMHYBgjXim";
 
-    // Item ID mapping for common e-wallets in Sekalipay
+    const BRAND_NAMES: Record<string, string> = {
+      dana: "DANA",
+      gopay: "GoPay",
+      ovo: "OVO",
+      shopeepay: "ShopeePay",
+      linkaja: "LinkAja",
+      isaku: "i.saku",
+      astrapay: "AstraPay",
+      doku: "DOKU",
+    };
+    const brandName = BRAND_NAMES[brandId.toLowerCase()] || brandId.toUpperCase();
+
+    // Verified Sekalipay item IDs from /api/v1/validation/services
     const BRAND_ITEM_MAP: Record<string, number> = {
-      dana: 1,
-      gopay: 2,
-      ovo: 3,
-      shopeepay: 4,
-      linkaja: 5,
-      isaku: 6,
-      astrapay: 7,
-      doku: 8,
+      dana: 8571,
+      gopay: 8503,
+      ovo: 9168,
+      shopeepay: 9425,
+      linkaja: 10888,
     };
 
-    let itemId = BRAND_ITEM_MAP[brandId.toLowerCase()] || 1;
+    const itemId = BRAND_ITEM_MAP[brandId.toLowerCase()];
 
-    // Discover dynamic item_id from Sekalipay validation services if possible
-    try {
-      const servicesRes = await fetch(
-        `https://sekalipay.com/api/v1/validation/services?search=${encodeURIComponent(brandId)}`,
-        {
-          headers: {
-            "X-APIKEY": apiKey,
-            Accept: "application/json",
-          },
-          cache: "no-store",
-        }
-      );
-
-      if (servicesRes.ok) {
-        const servicesData = await servicesRes.json();
-        if (Array.isArray(servicesData?.data) && servicesData.data.length > 0) {
-          const product = servicesData.data[0];
-          if (Array.isArray(product?.variants) && product.variants.length > 0) {
-            itemId = product.variants[0].item_id;
-          }
-        }
-      }
-    } catch (e) {
-      console.warn("Sekalipay services lookup warning:", e);
+    // Brands that don't have account validation in Sekalipay (e.g. i.saku, AstraPay, DOKU)
+    if (!itemId) {
+      return NextResponse.json({
+        success: true,
+        isFormatValid: true,
+        operator,
+        status: "UNCONFIGURED",
+        message: `Nomor ${operator} valid. Layanan ${brandName} tidak memerlukan cek nama pemilik (bisa langsung checkout).`,
+        phoneNumber: cleanNumber,
+      });
     }
 
     // Call Sekalipay Account Validation Endpoint
@@ -115,7 +110,7 @@ export async function POST(req: Request) {
         operator,
         status: "IP_NOT_WHITELISTED",
         detectedIp,
-        message: `Nomor ${operator} valid. IP server/laptop (${detectedIp}) belum di-whitelist di Sekalipay.`,
+        message: `Nomor ${operator} valid. Masukkan IP (${detectedIp}) ke Sekalipay Dashboard > IP Whitelist untuk menampilkan nama pemilik.`,
         phoneNumber: cleanNumber,
       });
     }
@@ -129,10 +124,20 @@ export async function POST(req: Request) {
       });
     }
 
+    if (resJson?.message === "NOT_FOUND" || resJson?.message === "Not found") {
+      return NextResponse.json({
+        success: false,
+        error: "ACCOUNT_NOT_FOUND",
+        message: `Nomor ${cleanNumber} tidak terdaftar sebagai akun ${brandName}. Periksa kembali nomor atau gunakan akun yang aktif.`,
+        operator,
+        phoneNumber: cleanNumber,
+      });
+    }
+
     return NextResponse.json({
       success: false,
       error: "ACCOUNT_NOT_FOUND",
-      message: resJson?.message || `Nomor tidak terdaftar atau tidak aktif di layanan ${brandId.toUpperCase()}.`,
+      message: `Nomor ini tidak terdaftar atau tidak aktif di layanan ${brandName}.`,
       operator,
       phoneNumber: cleanNumber,
     });
