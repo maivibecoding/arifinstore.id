@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { STORE_INFO } from "@/lib/constants";
 import { AuthUser } from "@/components/AuthModal";
@@ -63,16 +62,10 @@ export default function Navbar({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-18">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 transition-opacity hover:opacity-90">
-            <div className="relative h-10 w-36 sm:w-44 bg-white/10 rounded-lg p-1.5 flex items-center justify-center">
-              <Image
-                src="/assets/logo464x127.png"
-                alt="Arifin Store"
-                fill
-                priority
-                className="object-contain p-1 brightness-0 invert"
-              />
-            </div>
+          <Link href="/" className="flex items-center transition-opacity hover:opacity-90 py-1">
+            <span className="text-xl sm:text-2xl font-black tracking-tight text-white">
+              arifinstore<span className="text-amber-400">.id</span>
+            </span>
           </Link>
 
           {/* Desktop Navigation */}

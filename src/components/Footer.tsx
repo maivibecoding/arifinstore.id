@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { STORE_INFO, EMONEY_BRANDS } from "@/lib/constants";
 import {
@@ -20,14 +19,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Col 1 & 2: Brand Information */}
           <div className="lg:col-span-2 space-y-3.5">
-            <div className="relative h-10 w-44 bg-white/10 rounded-lg p-1 flex items-center justify-center">
-              <Image
-                src="/assets/logo464x127.png"
-                alt="Arifin Store"
-                fill
-                className="object-contain p-1 brightness-0 invert"
-              />
-            </div>
+            <Link href="/" className="inline-block transition-opacity hover:opacity-90">
+              <span className="text-2xl font-black tracking-tight text-white">
+                arifinstore<span className="text-amber-400">.id</span>
+              </span>
+            </Link>
             <p className="text-xs text-blue-100/80 leading-relaxed max-w-sm">
               <strong>{STORE_INFO.name}</strong> adalah platform resmi penyedia layanan isi ulang e-money/e-wallet tercepat di Indonesia serta lisensi akun digital premium bergaransi dengan sistem pembayaran QRIS otomatis 24 jam.
             </p>
