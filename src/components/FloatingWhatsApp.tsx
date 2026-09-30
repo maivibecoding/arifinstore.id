@@ -5,38 +5,40 @@ import { STORE_INFO } from "@/lib/constants";
 
 export default function FloatingWhatsApp() {
   return (
-    <div className="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-50 flex items-center group">
-      {/* Tooltip on hover (desktop) */}
-      <div className="hidden sm:block absolute right-full mr-3 px-3 py-1.5 rounded-xl bg-slate-900/90 backdrop-blur-xs text-white text-xs font-semibold shadow-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-        Chat CS WhatsApp 24 Jam
-        <div className="absolute top-1/2 -right-1 -translate-y-1/2 border-4 border-transparent border-l-slate-900/90" />
-      </div>
-
-      {/* Floating Circular WhatsApp Button */}
-      <a
-        href={STORE_INFO.whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Hubungi WhatsApp Customer Support"
-        className="relative w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white flex items-center justify-center shadow-lg hover:shadow-2xl hover:shadow-[#25D366]/40 hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
+    <a
+      href={STORE_INFO.whatsappUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Chat WhatsApp Customer Support"
+      title="Hubungi CS WhatsApp"
+      style={{
+        position: "fixed",
+        bottom: "24px",
+        right: "24px",
+        zIndex: 999999,
+        width: "58px",
+        height: "58px",
+        borderRadius: "50%",
+        backgroundColor: "#25D366",
+        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.15)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        textDecoration: "none",
+        cursor: "pointer",
+        transition: "transform 0.2s ease, box-shadow 0.2s ease",
+      }}
+      className="hover:scale-110 active:scale-95"
+    >
+      {/* Official WhatsApp Logo SVG */}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 32 32"
+        style={{ width: "34px", height: "34px", fill: "#ffffff", display: "block" }}
+        aria-hidden="true"
       >
-        {/* Subtle Pulse Ping Effect */}
-        <span className="absolute -inset-0.5 rounded-full bg-[#25D366]/30 animate-ping opacity-75 pointer-events-none" />
-
-        {/* Official WhatsApp SVG Logo */}
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="w-7 h-7 sm:w-8 sm:h-8 relative z-10"
-          aria-hidden="true"
-        >
-          <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-        </svg>
-
-        {/* Online Status Green Dot */}
-        <span className="absolute top-0.5 right-0.5 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full z-20" />
-      </a>
-    </div>
+        <path d="M16.002 2C8.28 2 2 8.28 2 16c0 2.58.7 5.06 1.93 7.21L2 30l7.04-1.85A13.93 13.93 0 0 0 16.002 30C23.72 30 30 23.72 30 16s-6.28-14-13.998-14zm0 25.59a11.53 11.53 0 0 1-5.88-1.6l-.42-.25-4.37 1.15 1.17-4.26-.28-.44a11.57 11.57 0 0 1-1.78-6.19c0-6.39 5.2-11.59 11.56-11.59 6.38 0 11.58 5.2 11.58 11.59 0 6.39-5.2 11.59-11.58 11.59zm6.34-8.68c-.35-.17-2.06-1.02-2.38-1.13-.32-.12-.55-.17-.78.18-.23.35-.9 1.13-1.1 1.36-.2.23-.4.26-.75.09-.35-.17-1.47-.54-2.8-1.73-1.04-.92-1.74-2.07-1.94-2.42-.2-.35-.02-.54.15-.71.16-.16.35-.41.52-.61.17-.2.23-.35.35-.58.12-.23.06-.44-.03-.61-.09-.17-.78-1.89-1.07-2.58-.28-.68-.57-.59-.78-.6h-.67c-.23 0-.61.09-.93.44-.32.35-1.22 1.19-1.22 2.91s1.25 3.37 1.42 3.6c.17.23 2.45 3.75 5.94 5.26.83.36 1.48.57 1.98.73.83.27 1.59.23 2.19.14.67-.1 2.06-.84 2.35-1.65.29-.81.29-1.51.2-1.65-.09-.15-.32-.23-.67-.4z" />
+      </svg>
+    </a>
   );
 }
