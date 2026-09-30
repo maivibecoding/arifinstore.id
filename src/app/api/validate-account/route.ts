@@ -17,6 +17,9 @@ function detectOperator(phone: string): string {
   return "Seluler";
 }
 
+// In-memory cache for validated accounts (5 minutes TTL for valid accounts, 30s for not found)
+const validationCache = new Map<string, { data: any; timestamp: number; ttl: number }>();
+
 export async function POST(req: Request) {
   try {
     const body: ValidateRequestBody = await req.json();
@@ -34,6 +37,13 @@ export async function POST(req: Request) {
         },
         { status: 400 }
       );
+    }
+
+    const cacheKey = `${(brandId || "").toLowerCase()}:${cleanNumber}`;
+    const now = Date.now();
+    const cached = validationCache.get(cacheKey);
+    if (cached && now - cached.timestamp < cached.ttl) {
+      return NextResponse.json(cached.data);
     }
 
     const operator = detectOperator(cleanNumber);
@@ -93,18 +103,20 @@ export async function POST(req: Request) {
 
     if (validateRes.ok && (resJson?.data?.account_name || resJson?.data?.display_name)) {
       const accountName = resJson.data.account_name || resJson.data.display_name;
-      return NextResponse.json({
+      const successData = {
         success: true,
         accountName: String(accountName).trim().toUpperCase(),
         operator,
         phoneNumber: cleanNumber,
         source: "SEKALIPAY",
-      });
+      };
+      validationCache.set(cacheKey, { data: successData, timestamp: Date.now(), ttl: 5 * 60 * 1000 });
+      return NextResponse.json(successData);
     }
 
     if (resJson?.message && String(resJson.message).includes("INVALID_IP")) {
       const detectedIp = String(resJson.message).replace("INVALID_IP=", "").trim();
-      return NextResponse.json({
+      const ipData = {
         success: true,
         isFormatValid: true,
         operator,
@@ -112,7 +124,9 @@ export async function POST(req: Request) {
         detectedIp,
         message: `Nomor ${operator} valid. Masukkan IP (${detectedIp}) ke Sekalipay Dashboard > IP Whitelist untuk menampilkan nama pemilik.`,
         phoneNumber: cleanNumber,
-      });
+      };
+      validationCache.set(cacheKey, { data: ipData, timestamp: Date.now(), ttl: 60 * 1000 });
+      return NextResponse.json(ipData);
     }
 
     if (resJson?.message === "INVALID_API_KEY") {
@@ -125,22 +139,26 @@ export async function POST(req: Request) {
     }
 
     if (resJson?.message === "NOT_FOUND" || resJson?.message === "Not found") {
-      return NextResponse.json({
+      const notFoundData = {
         success: false,
         error: "ACCOUNT_NOT_FOUND",
         message: `Nomor ${cleanNumber} tidak terdaftar sebagai akun ${brandName}. Periksa kembali nomor atau gunakan akun yang aktif.`,
         operator,
         phoneNumber: cleanNumber,
-      });
+      };
+      validationCache.set(cacheKey, { data: notFoundData, timestamp: Date.now(), ttl: 30 * 1000 });
+      return NextResponse.json(notFoundData);
     }
 
-    return NextResponse.json({
+    const defaultNotFound = {
       success: false,
       error: "ACCOUNT_NOT_FOUND",
       message: `Nomor ini tidak terdaftar atau tidak aktif di layanan ${brandName}.`,
       operator,
       phoneNumber: cleanNumber,
-    });
+    };
+    validationCache.set(cacheKey, { data: defaultNotFound, timestamp: Date.now(), ttl: 30 * 1000 });
+    return NextResponse.json(defaultNotFound);
   } catch (error: any) {
     console.error("Error in validate-account API:", error);
     return NextResponse.json(

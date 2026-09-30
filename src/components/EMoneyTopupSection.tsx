@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { EMONEY_BRANDS, FIXED_NOMINALS } from "@/lib/constants";
 import { EMoneyBrand, NominalItem } from "@/types";
@@ -42,20 +42,32 @@ export default function EMoneyTopupSection({
   const [validationStatus, setValidationStatus] = useState<"IDLE" | "SUCCESS" | "NOT_FOUND" | "IP_NOT_WHITELISTED" | "INVALID_PHONE" | "UNCONFIGURED">("IDLE");
   const [validationMessage, setValidationMessage] = useState<string | null>(null);
 
+  // Prevent async race conditions where slow stale requests overwrite valid account names
+  const lastValidatedKey = useRef<string>("");
+
   // Sync if external selectedBrandId changes
   useEffect(() => {
     const brand = EMONEY_BRANDS.find((b) => b.id === selectedBrandId);
     if (brand) setSelectedBrand(brand);
   }, [selectedBrandId]);
 
-  // Real Account validation inquiry
+  // Real Account validation inquiry with AbortController & stale request discarding
   useEffect(() => {
     const cleanNumber = phoneNumber.replace(/[^0-9]/g, "");
-    if (cleanNumber.length >= 10) {
+
+    if (cleanNumber.length >= 10 && cleanNumber.length <= 14) {
+      const currentKey = `${selectedBrand.id}:${cleanNumber}`;
+      if (lastValidatedKey.current === currentKey) {
+        return; // Already validated this exact number and brand, keep state
+      }
+
       setIsValidating(true);
       setAccountName(null);
       setValidationMessage(null);
       setValidationStatus("IDLE");
+
+      const controller = new AbortController();
+      let isCancelled = false;
 
       const timer = setTimeout(async () => {
         try {
@@ -66,8 +78,15 @@ export default function EMoneyTopupSection({
               brandId: selectedBrand.id,
               phoneNumber: cleanNumber,
             }),
+            signal: controller.signal,
           });
+
+          if (isCancelled) return;
           const data = await res.json();
+          if (isCancelled) return;
+
+          lastValidatedKey.current = currentKey;
+
           if (data.success && data.accountName) {
             setAccountName(data.accountName);
             setValidationStatus("SUCCESS");
@@ -89,16 +108,24 @@ export default function EMoneyTopupSection({
             setDetectedOperator(data.operator || "");
             setValidationMessage(null);
           }
-        } catch (err) {
+        } catch (err: any) {
+          if (err.name === "AbortError" || isCancelled) return;
           console.error("Account validation error:", err);
           setValidationStatus("UNCONFIGURED");
         } finally {
-          setIsValidating(false);
+          if (!isCancelled) {
+            setIsValidating(false);
+          }
         }
-      }, 500);
+      }, 700);
 
-      return () => clearTimeout(timer);
+      return () => {
+        isCancelled = true;
+        clearTimeout(timer);
+        controller.abort();
+      };
     } else {
+      lastValidatedKey.current = "";
       setAccountName(null);
       setValidationMessage(null);
       setValidationStatus("IDLE");
