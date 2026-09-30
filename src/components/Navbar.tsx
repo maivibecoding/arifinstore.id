@@ -80,25 +80,25 @@ export default function Navbar({
             </span>
           </Link>
 
-          {/* Right side: Masuk / Daftar & Bantuan */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Right side: Masuk / Daftar, Bantuan, & Mobile Menu Toggle */}
+          <div className="flex items-center gap-2 sm:gap-3">
             {currentUser ? (
               <div className="relative">
                 <button
                   type="button"
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
-                  className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-white transition-all cursor-pointer"
+                  className="flex items-center gap-2 px-2.5 sm:px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 border border-white/20 text-white transition-all cursor-pointer"
                 >
-                  <div className="w-7 h-7 rounded-full bg-[#0066cc] flex items-center justify-center text-xs font-bold text-white shadow-sm">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#0066cc] flex items-center justify-center text-xs font-bold text-white shadow-sm">
                     {currentUser.name.charAt(0).toUpperCase()}
                   </div>
-                  <div className="text-left">
+                  <div className="text-left hidden xs:block">
                     <span className="text-xs font-bold block leading-tight">
                       {currentUser.name}
                     </span>
                     <span className="text-[10px] text-emerald-300 font-semibold flex items-center gap-1">
                       <Sparkles className="w-2.5 h-2.5 text-amber-300" />
-                      VIP Member
+                      VIP
                     </span>
                   </div>
                   <ChevronDown className="w-3.5 h-3.5 text-blue-200" />
@@ -134,18 +134,18 @@ export default function Navbar({
                 )}
               </div>
             ) : (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 sm:gap-2">
                 <button
                   type="button"
                   onClick={() => onOpenAuth?.("login")}
-                  className="hm-login px-3.5 py-1.5 rounded-lg text-xs font-bold text-white hover:bg-white/10 border border-white/20 transition-all cursor-pointer"
+                  className="hm-login px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold text-white hover:bg-white/10 border border-white/20 transition-all cursor-pointer"
                 >
                   Masuk
                 </button>
                 <button
                   type="button"
                   onClick={() => onOpenAuth?.("register")}
-                  className="hm-regis px-4 py-1.5 rounded-lg text-xs font-extrabold text-[#35508d] bg-white hover:bg-blue-50 shadow-sm transition-all cursor-pointer"
+                  className="hm-regis px-3 sm:px-4 py-1.5 rounded-lg text-xs font-extrabold text-[#35508d] bg-white hover:bg-blue-50 shadow-sm transition-all cursor-pointer"
                 >
                   Daftar
                 </button>
@@ -157,38 +157,19 @@ export default function Navbar({
               href={STORE_INFO.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm transition-all"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-500 shadow-sm transition-all"
             >
-              <MessageCircle className="w-4 h-4" />
-              <span>Bantuan</span>
+              <MessageCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Bantuan</span>
             </a>
-          </div>
 
-          {/* Mobile buttons */}
-          <div className="flex sm:hidden items-center gap-2">
-            {!currentUser ? (
-              <button
-                type="button"
-                onClick={() => onOpenAuth?.("login")}
-                className="px-3 py-1 rounded-md text-xs font-bold text-white bg-[#0066cc]"
-              >
-                Masuk
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => onLogout?.()}
-                className="p-1 rounded-md text-xs font-bold text-blue-200 bg-white/10"
-              >
-                <LogOut className="w-4 h-4" />
-              </button>
-            )}
+            {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-white/10 text-white hover:bg-white/20"
+              className="md:hidden p-2 rounded-lg bg-white/10 text-white hover:bg-white/20 cursor-pointer"
               aria-label="Toggle menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
         </div>
